@@ -1,9 +1,12 @@
 package com.spring.springboot.services;
 
-import com.spring.springboot.entities.Course;
+import java.util.List;
+
 
 public interface CourseService {
 	
-	public Course findByName(String name);
-	
+	public String findByName(String name);
+	public String findDescriptionByName(String name);
+	public List<String> findAll();
+	public String save(String name, String description);
 }

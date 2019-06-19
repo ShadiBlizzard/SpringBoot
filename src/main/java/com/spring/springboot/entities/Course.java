@@ -1,5 +1,7 @@
 package com.spring.springboot.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,8 +14,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name = "courses")
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"})
-public class Course {
+public class Course implements Serializable{
 	
+	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1237205777793373742L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -24,6 +33,13 @@ public class Course {
 	private String description;
 	
 	
+	
+	
+	public Course(@NotBlank String name, @NotBlank String description) {
+		super();
+		this.name = name;
+		this.description = description;
+	}
 	public int getId() {
 		return id;
 	}
