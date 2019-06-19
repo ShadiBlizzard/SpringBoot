@@ -46,13 +46,25 @@ public class CourseServiceImplementation implements CourseService {
 	
 	@Override
 	public String save(String name, String description) {
-		if(name!= null && description!= null) {
+		if(coursesRepository.findByName(name)== null && name!= null && description!= null) {
 			Course course = new Course(name, description);
 			coursesRepository.save(course);
 			return "New course inserted";
 		}
 		else 
 			return "Parameters not valid";
+	}
+
+	@Override
+	public String update(String name, String description) {
+		Course course = coursesRepository.findByName(name);
+		if(course!=null) {
+			course.setDescription(description);
+			coursesRepository.save(course);
+			return "Update successfull";
+		}
+		
+		return "Something went wrong!";
 	}
 
 }

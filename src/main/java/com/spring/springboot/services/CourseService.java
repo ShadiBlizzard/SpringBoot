@@ -9,4 +9,5 @@ public interface CourseService {
 	public String findDescriptionByName(String name);
 	public List<String> findAll();
 	public String save(String name, String description);
+	public String update(String name, String description);
 }

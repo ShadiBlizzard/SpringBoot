@@ -1,10 +1,14 @@
 package com.spring.springboot.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +36,19 @@ public class CourseController {
 	@GetMapping("/all")
 	private List<String> findAll() {
 		return courseService.findAll();
+	}
+	
+	@PostMapping("/new")
+	private String saveNewCourse(@RequestBody Map<String, String> body) {
+		String name = body.get("name");
+		String description = body.get("description");
+		
+		return courseService.save(name, description);
+	}
+	
+	@PutMapping("/update/{name}")
+	private String updateCourseDescription(@PathVariable String name, @RequestBody Map<String, String> body) {
+		return courseService.update(name, body.get("description"));
 	}
 	
 	

@@ -9,11 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "courses")
-@JsonIgnoreProperties(value = {"createdAt", "updatedAt"})
 public class Course implements Serializable{
 	
 	
@@ -32,8 +30,7 @@ public class Course implements Serializable{
 	@NotBlank
 	private String description;
 	
-	
-	
+	public Course() {}	
 	
 	public Course(@NotBlank String name, @NotBlank String description) {
 		super();
