@@ -43,8 +43,6 @@ public class Course {
 		this.description = description;
 	}
 	
-	
-	
-	//GIULIA STAI CALMA
+	//MA MOEVAS!!!
 
 }
