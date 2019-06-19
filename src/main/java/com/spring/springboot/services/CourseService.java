@@ -1,4 +1,4 @@
-package com.spring.springboot.services.implementation;
+package com.spring.springboot.services;
 
 import com.spring.springboot.entities.Course;
 
