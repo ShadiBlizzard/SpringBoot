@@ -2,7 +2,6 @@ package com.spring.springboot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 @SpringBootApplication
 public class SpringbootApplication {
 	
@@ -11,9 +10,7 @@ public class SpringbootApplication {
 		SpringApplication.run(SpringbootApplication.class, args);
 		
 	}
-	
-	
-	
+
 	
 
 }
