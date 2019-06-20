@@ -26,6 +26,12 @@ import org.hibernate.annotations.Immutable;
 public class Career {
 
 	private CareerId careerId;
+	
+	public Career() {}
+	
+	public Career(CareerId careerId) {
+		this.careerId = careerId;
+	}
 
 	@EmbeddedId
 	public CareerId getCareerId() {

@@ -15,6 +15,16 @@ public class CareerId implements Serializable{
 	private String coursename;
 	private String evaluation;
 
+	public CareerId() {}
+
+	public CareerId(String studentname, String studentsurname, String coursename, String evaluation) {
+		super();
+		this.studentname = studentname;
+		this.studentsurname = studentsurname;
+		this.coursename = coursename;
+		this.evaluation = evaluation;
+	}
+
 	public String getStudentname() {
 		return studentname;
 	}
