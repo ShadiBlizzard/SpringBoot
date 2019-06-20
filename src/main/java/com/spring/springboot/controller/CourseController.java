@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.springboot.services.CourseService;
@@ -23,7 +23,7 @@ public class CourseController {
 	@Autowired
 	private CourseService courseService;
 	
-	@RequestMapping(method = RequestMethod.GET, path = "/{name}")
+	@GetMapping("/{name}")
 	private String findOne(@PathVariable String name) {
 		return courseService.findByName(name);
 	}
@@ -49,6 +49,17 @@ public class CourseController {
 	@PutMapping("/update/{name}")
 	private String updateCourseDescription(@PathVariable String name, @RequestBody Map<String, String> body) {
 		return courseService.update(name, body.get("description"));
+	}
+	
+	/**
+	 * it deletes a course and all the exams informations related to it (operates with CASCADE)
+	 * @param name
+	 * @return
+	 */
+	@DeleteMapping("/delete/{name}")
+	private String delete(@PathVariable String name) {
+		return courseService.delete(name);
+		
 	}
 	
 	

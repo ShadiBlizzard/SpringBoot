@@ -5,5 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.spring.springboot.entities.Student;
 
 public interface StudentRepository extends JpaRepository<Student, Integer> {
+	
+	public Student findById(int id);
 
 }

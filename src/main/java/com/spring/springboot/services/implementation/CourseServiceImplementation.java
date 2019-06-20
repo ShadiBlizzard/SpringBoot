@@ -67,4 +67,15 @@ public class CourseServiceImplementation implements CourseService {
 		return "Something went wrong!";
 	}
 
+	@Override
+	public String delete(String name) {
+		Course course = coursesRepository.findByName(name);
+		if(course != null) {
+			coursesRepository.deleteById(course.getId());
+			return "Course deleted successfully";
+		}
+		
+		return "The course you are tryng to delete doesn't exist";
+	}
+
 }

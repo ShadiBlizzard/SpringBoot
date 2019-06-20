@@ -2,6 +2,7 @@ package com.spring.springboot.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 
@@ -14,7 +15,7 @@ public class ExamsId implements Serializable{
 	private Student student;
 	private Course course;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	public Student getStudent() {
 		return student;
 	}
@@ -23,7 +24,7 @@ public class ExamsId implements Serializable{
 		this.student = student;
 	}
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	public Course getCourse() {
 		return course;
 	}

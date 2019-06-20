@@ -10,4 +10,5 @@ public interface CourseService {
 	public List<String> findAll();
 	public String save(String name, String description);
 	public String update(String name, String description);
+	public String delete(String name);
 }
