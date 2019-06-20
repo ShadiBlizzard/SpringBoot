@@ -48,8 +48,9 @@ public class CourseServiceImplementation implements CourseService {
 	public String save(String name, String description) {
 		if(coursesRepository.findByName(name)== null && name!= null && description!= null) {
 			Course course = new Course(name, description);
-			coursesRepository.save(course);
-			return "New course inserted";
+			if(coursesRepository.save(course)!= null)
+				return "New course inserted";
+			return "Something went wrong";
 		}
 		else 
 			return "Parameters not valid";
