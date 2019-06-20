@@ -19,6 +19,13 @@ public class Exams {
 	@NotNull
 	private Integer evaluation;
 	
+	public Exams() {}
+	
+	public Exams(ExamsId examsId, @NotNull Integer evaluation) {
+		this.examsId = examsId;
+		this.evaluation = evaluation;
+	}
+
 	@EmbeddedId
 	public ExamsId getExamsId() {
 		return examsId;

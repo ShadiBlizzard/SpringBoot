@@ -15,6 +15,13 @@ public class ExamsId implements Serializable{
 	private Student student;
 	private Course course;
 
+	public ExamsId() {}
+	
+	public ExamsId(Student student, Course course) {
+		this.student = student;
+		this.course = course;
+	}
+
 	@ManyToOne(cascade = CascadeType.REMOVE)
 	public Student getStudent() {
 		return student;
