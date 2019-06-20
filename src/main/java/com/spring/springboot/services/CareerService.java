@@ -9,6 +9,6 @@ public interface CareerService {
 	public List<Career> findAll();
 	public List<Career> findByStudent(String name, String surname);
 	public List<Career> findByCourse(String coursename);
-	public List<Career> findByCourseAndEvaluation(String evaluation);
+	public List<Career> findByCourseAndEvaluation(String course, String evaluation);
 	
 }
