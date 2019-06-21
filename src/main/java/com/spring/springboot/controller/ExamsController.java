@@ -1,6 +1,9 @@
 package com.spring.springboot.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,7 +17,10 @@ import com.spring.springboot.services.ExamsService;
 
 @RestController
 @RequestMapping("/exams")
+@CrossOrigin(origins  = "*")
 public class ExamsController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ExamsController.class);
 	
 	@Autowired
 	private ExamsService examsService;
@@ -24,7 +30,7 @@ public class ExamsController {
 		try {
 			return  examsService.save(request.getStudent(), request.getCourse(), request.getEvaluation());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Errore sulla insert: ", e);
 			return null;
 		}
 	}
@@ -34,7 +40,7 @@ public class ExamsController {
 		try {
 			return  examsService.update(request.getStudent(), request.getCourse(), request.getEvaluation());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Errore sull'update: ", e);
 			return null;
 		}
 	}
@@ -45,8 +51,8 @@ public class ExamsController {
 			examsService.delete(request.getStudent(), request.getCourse());
 			return "OK";
 		} catch (Exception e) {
-			e.printStackTrace();
-			return "FAIL";
+			logger.error("Errore sulla delete: ", e);
+			return null;
 		}
 	}
 }
