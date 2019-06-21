@@ -37,6 +37,7 @@ public class StudentController {
 	
 	@PostMapping("/new")
 	public String insertNewStudent(@RequestBody Map<String, String> body) {
+		System.out.println(studentService.save(body.get("name"), body.get("surname")));
 		return studentService.save(body.get("name"), body.get("surname"));
 	}
 	
