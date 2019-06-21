@@ -5,10 +5,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.springboot.entities.Exams;
+import com.spring.springboot.request.ExamsJsonRequest;
 import com.spring.springboot.services.ExamsService;
 
 @RestController
@@ -19,9 +21,9 @@ public class ExamsController {
 	private ExamsService examsService;
 	
 	@PostMapping("/save/{student}/{course}/{evaluation}")
-	public Exams save(@PathVariable Integer student, @PathVariable String course, @PathVariable Integer evaluation) {
+	public Exams save(@RequestBody ExamsJsonRequest request) {
 		try {
-			return  examsService.save(student, course, evaluation);
+			return  examsService.save(request.getStudent(), request.getCourse(), request.getEvaluation());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -29,19 +31,19 @@ public class ExamsController {
 	}
 	
 	@PutMapping("/update/{student}/{course}/{evaluation}")
-	public Exams update(@PathVariable Integer student, @PathVariable String course, @PathVariable Integer evaluation) {
+	public Exams update(@RequestBody ExamsJsonRequest request) {
 		try {
-			return  examsService.update(student, course, evaluation);
+			return  examsService.update(request.getStudent(), request.getCourse(), request.getEvaluation());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 	
-	@DeleteMapping("/delete/{student}/{course}")
-	public String delete(@PathVariable Integer student, @PathVariable String course) {
+	@DeleteMapping("/delete")
+	public String delete(@RequestBody ExamsJsonRequest request) {
 		try {
-			examsService.delete(student, course);
+			examsService.delete(request.getStudent(), request.getCourse());
 			return "OK";
 		} catch (Exception e) {
 			e.printStackTrace();
