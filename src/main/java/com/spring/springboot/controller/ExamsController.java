@@ -19,7 +19,7 @@ public class ExamsController {
 	@Autowired
 	private ExamsService examsService;
 	
-	@PostMapping("/save/{student}/{course}/{evaluation}")
+	@PostMapping("/save")
 	public Exams save(@RequestBody ExamsJsonRequest request) {
 		try {
 			return  examsService.save(request.getStudent(), request.getCourse(), request.getEvaluation());
@@ -29,7 +29,7 @@ public class ExamsController {
 		}
 	}
 	
-	@PutMapping("/update/{student}/{course}/{evaluation}")
+	@PutMapping("/update")
 	public Exams update(@RequestBody ExamsJsonRequest request) {
 		try {
 			return  examsService.update(request.getStudent(), request.getCourse(), request.getEvaluation());
