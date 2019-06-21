@@ -24,8 +24,6 @@ public class CareerController {
 	
 	@GetMapping("/all")
 	public List<Career> all(HttpServletResponse response){
-		List<Career> list = careerService.findAll();
-		response.addHeader("X-Total-Count", String.valueOf(list.size()));
 		return careerService.findAll();
 	}
 	
