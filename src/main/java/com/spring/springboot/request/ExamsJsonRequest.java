@@ -3,9 +3,7 @@ package com.spring.springboot.request;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-@JsonSerialize
 public class ExamsJsonRequest implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
