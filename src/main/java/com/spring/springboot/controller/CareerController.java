@@ -2,6 +2,8 @@ package com.spring.springboot.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,9 @@ public class CareerController {
 	private CareerService careerService;
 	
 	@GetMapping("/all")
-	public List<Career> all(){
+	public List<Career> all(HttpServletResponse response){
+		List<Career> list = careerService.findAll();
+		response.addHeader("X-Total-Count", String.valueOf(list.size()));
 		return careerService.findAll();
 	}
 	
