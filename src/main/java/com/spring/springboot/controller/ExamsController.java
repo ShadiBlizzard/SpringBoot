@@ -1,6 +1,7 @@
 package com.spring.springboot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,6 +15,7 @@ import com.spring.springboot.services.ExamsService;
 
 @RestController
 @RequestMapping("/exams")
+@CrossOrigin(origins  = "*")
 public class ExamsController {
 	
 	@Autowired
