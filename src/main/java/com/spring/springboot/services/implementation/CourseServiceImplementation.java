@@ -3,6 +3,8 @@ package com.spring.springboot.services.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,13 +15,15 @@ import com.spring.springboot.services.CourseService;
 @Service
 public class CourseServiceImplementation implements CourseService {
 	
+	private static final Logger logger = LoggerFactory.getLogger(CourseServiceImplementation.class);
+	
 	@Autowired
 	private CoursesRepository coursesRepository;
 	
 	@Override
 	public String findByName(String name) {
 		Course course = coursesRepository.findByName(name);
-		
+		logger.debug("With name " + name + " found course " + ((course==null)?"NULL":course.getName()));
 		if (course == null) 
 			return "Sorry, the course name you inserted doesn't exist";
 		return "Course id: " + course.getId() + " name: " + course.getName() + " description: " + course.getDescription();
@@ -36,7 +40,7 @@ public class CourseServiceImplementation implements CourseService {
 	@Override
 	public List<String> findAll() {
 		List<Course> courses = coursesRepository.findAll();
-		
+		logger.debug(courses.size() + " courses founded.");
 		List<String> found = new ArrayList<>();
 		for(Course c: courses) 
 			found.add(c.getName() + ": " + c.getDescription());
