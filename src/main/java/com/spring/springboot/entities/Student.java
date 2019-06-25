@@ -34,12 +34,7 @@ public class Student implements Serializable{
 	private String name;
 	@NotBlank
 	private String surname;
-	
-	@Column(name="profilepic")
-	@Lob
-	private Blob profilepic;
-	
-	
+		
 	public int getId() {
 		return id;
 	}
