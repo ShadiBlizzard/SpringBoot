@@ -17,7 +17,7 @@ public class StudentServiceImplementation implements StudentService {
 
 	@Override
 	public String findStudentById(int id) {
-		Student student = (Student) studentRepository.findById(id);
+		Student student = (Student) studentRepository.findById(id).get();
 		
 		if(student!= null) 
 			return "Student found: " + student.getName() + " " + student.getSurname();
@@ -54,7 +54,7 @@ public class StudentServiceImplementation implements StudentService {
 
 	@Override
 	public String update(int id, String name, String surname) {
-		Student student = studentRepository.findById(id);
+		Student student = studentRepository.findById(id).get();
 		if(student!= null) {
 			if(name!=null)
 				student.setName(name);
@@ -70,7 +70,7 @@ public class StudentServiceImplementation implements StudentService {
 
 	@Override
 	public String delete(int id) {
-		Student student = studentRepository.findById(id);
+		Student student = studentRepository.findById(id).get();
 		if(student!=null) {
 			studentRepository.delete(student);
 			return "Deletion successfull";

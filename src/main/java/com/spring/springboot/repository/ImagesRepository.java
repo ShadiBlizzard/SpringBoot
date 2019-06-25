@@ -7,7 +7,5 @@ import com.spring.springboot.entities.Images;
 
 public interface ImagesRepository extends JpaRepository<Images, Integer>{
 	
-	
-	public Images findById(int id);
 
 }

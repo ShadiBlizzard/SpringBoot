@@ -28,7 +28,7 @@ public class ImagesServiceImplementation implements ImagesService {
 
 	@Override
 	public String delete(int student) {
-		Images images = imagesRepository.findById(student);
+		Images images = imagesRepository.findById(student).get();
 		if(images!= null) {
 			imagesRepository.delete(images);
 			return "Deletion successful!";
@@ -38,7 +38,7 @@ public class ImagesServiceImplementation implements ImagesService {
 
 	@Override
 	public Images update(int student, byte[] image) {
-		Images images = imagesRepository.findById(student);
+		Images images = imagesRepository.findById(student).get();
 		if (images!= null) {
 			images.setValue(image);
 			imagesRepository.save(images);
