@@ -3,6 +3,7 @@ package com.spring.springboot.controller;
 
 import java.io.IOException;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.springboot.entities.Images;
-import com.spring.springboot.entities.Student;
 import com.spring.springboot.request.ImagesJsonRequest;
 import com.spring.springboot.services.ImagesService;
-import com.spring.springboot.services.StudentService;
 
 @RestController
 @RequestMapping("/images")
@@ -54,6 +52,7 @@ public class ImagesController {
 		}
 	}
 	
+
 	@GetMapping(value = "/{id}", produces = MediaType.IMAGE_PNG_VALUE)
 	public byte[] getImage(@PathVariable Integer id) {
 		Images image = imagesService.findById(id);
