@@ -25,4 +25,26 @@ public class ImagesServiceImplementation implements ImagesService {
 		Images newImage = new Images(student, image);
 		return imagesRepository.save(newImage);
 	}
+
+	@Override
+	public String delete(int student) {
+		Images images = imagesRepository.findById(student);
+		if(images!= null) {
+			imagesRepository.delete(images);
+			return "Deletion successful!";
+		}
+		return "Image not found";
+	}
+
+	@Override
+	public Images update(int student, byte[] image) {
+		Images images = imagesRepository.findById(student);
+		if (images!= null) {
+			images.setValue(image);
+			imagesRepository.save(images);
+			return images;
+		}
+		
+		return null;
+	}
 }
