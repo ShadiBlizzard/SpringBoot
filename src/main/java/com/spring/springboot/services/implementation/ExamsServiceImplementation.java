@@ -15,7 +15,6 @@ import com.spring.springboot.services.ExamsService;
 
 
 @Service
-@Transactional(readOnly = false)
 public class ExamsServiceImplementation implements ExamsService {
 	
 	@Autowired
@@ -28,16 +27,19 @@ public class ExamsServiceImplementation implements ExamsService {
 	private StudentRepository studentRepository;
 
 	@Override
+	@Transactional(readOnly = false)
 	public Exams save(Integer student, String course, Integer evaluation) throws Exception{
 		return persistExams(student, course, evaluation, true);
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Exams update(Integer student, String course, Integer evaluation) throws Exception{
 		return persistExams(student, course, evaluation, false);
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void delete(Integer student, String course) throws Exception {
 		examsRepository.delete(getExams(student,course, null, false));
 	}
