@@ -2,6 +2,7 @@ package com.spring.springboot.services.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.springboot.entities.Course;
 import com.spring.springboot.entities.Exams;
@@ -14,6 +15,7 @@ import com.spring.springboot.services.ExamsService;
 
 
 @Service
+@Transactional(readOnly = false)
 public class ExamsServiceImplementation implements ExamsService {
 	
 	@Autowired

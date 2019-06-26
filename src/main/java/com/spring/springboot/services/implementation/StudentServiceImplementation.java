@@ -4,18 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.springboot.entities.Student;
 import com.spring.springboot.repository.StudentRepository;
 import com.spring.springboot.services.StudentService;
 
 @Service
+@Transactional(readOnly = false)
 public class StudentServiceImplementation implements StudentService {
 	
 	@Autowired
 	public StudentRepository studentRepository;
 
 	@Override
+	@Transactional(readOnly = true)
 	public String findStudentById(int id) {
 		Student student = (Student) studentRepository.findById(id).get();
 		
@@ -27,6 +30,7 @@ public class StudentServiceImplementation implements StudentService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<String> findAll() {
 		List<Student> students = studentRepository.findAll();
 		

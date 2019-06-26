@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.springboot.entities.Course;
 import com.spring.springboot.repository.CoursesRepository;
@@ -21,6 +22,7 @@ public class CourseServiceImplementation implements CourseService {
 	private CoursesRepository coursesRepository;
 	
 	@Override
+	@Transactional(readOnly = true)
 	public String findByName(String name) {
 		Course course = coursesRepository.findByName(name);
 		logger.debug("With name " + name + " found course " + ((course==null)?"NULL":course.getName()));
@@ -30,6 +32,7 @@ public class CourseServiceImplementation implements CourseService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public String findDescriptionByName(String name) {
 		String desc = coursesRepository.findDescriptionByName(name);
 		if (desc == null)
@@ -38,6 +41,7 @@ public class CourseServiceImplementation implements CourseService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<String> findAll() {
 		List<Course> courses = coursesRepository.findAll();
 		logger.debug(courses.size() + " courses founded.");
@@ -49,6 +53,7 @@ public class CourseServiceImplementation implements CourseService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public String save(String name, String description) {
 		if(coursesRepository.findByName(name)== null && name!= null && description!= null) {
 			Course course = new Course(name, description);
@@ -61,6 +66,7 @@ public class CourseServiceImplementation implements CourseService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public String update(String name, String description) {
 		Course course = coursesRepository.findByName(name);
 		if(course!=null) {
@@ -73,6 +79,7 @@ public class CourseServiceImplementation implements CourseService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public String delete(String name) {
 		Course course = coursesRepository.findByName(name);
 		if(course != null) {

@@ -61,7 +61,6 @@ public class CourseController {
 	@DeleteMapping("/delete/{name}")
 	private String delete(@PathVariable String name) {
 		return courseService.delete(name);
-		
 	}
 	
 	

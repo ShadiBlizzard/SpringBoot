@@ -2,14 +2,17 @@ package com.spring.springboot.services.implementation;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.springboot.entities.Career;
 import com.spring.springboot.repository.CareerRepository;
 import com.spring.springboot.services.CareerService;
 
 @Service
+@Transactional(readOnly = true)
 public class CareerServiceImplementation implements CareerService {
 	
 	@Autowired
