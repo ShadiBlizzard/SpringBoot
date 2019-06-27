@@ -2,10 +2,12 @@ package com.spring.springboot.services.implementation;
 
 
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.spring.springboot.dto.ImagesDto;
 import com.spring.springboot.entities.Images;
 import com.spring.springboot.repository.ImagesRepository;
 import com.spring.springboot.services.ImagesService;
@@ -16,6 +18,9 @@ public class ImagesServiceImplementation implements ImagesService {
 
 	@Autowired
 	private ImagesRepository imagesRepository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -50,4 +55,13 @@ public class ImagesServiceImplementation implements ImagesService {
 		
 		return null;
 	}
+	
+	public ImagesDto convertImagesToDto(Images images) {
+		return modelMapper.map(images, ImagesDto.class);
+	}
+	
+	public Images convertDtoToImages(ImagesDto dto) {
+		return modelMapper.map(dto, Images.class);
+	}
+	
 }
