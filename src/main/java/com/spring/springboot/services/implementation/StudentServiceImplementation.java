@@ -3,12 +3,10 @@ package com.spring.springboot.services.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.spring.springboot.dto.StudentDto;
 import com.spring.springboot.entities.Student;
 import com.spring.springboot.repository.StudentRepository;
 import com.spring.springboot.services.StudentService;
@@ -19,9 +17,6 @@ public class StudentServiceImplementation implements StudentService {
 	
 	@Autowired
 	private StudentRepository studentRepository;
-	
-	@Autowired
-	private ModelMapper modelMapper;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -87,14 +82,6 @@ public class StudentServiceImplementation implements StudentService {
 		}
 		
 		return "Student not found!";
-	}
-	
-	public StudentDto convertStudentToDto(Student student) {
-		return modelMapper.map(student, StudentDto.class);
-	}
-	
-	public Student convertDtoToStudent(StudentDto dto) {
-		return modelMapper.map(dto, Student.class);
 	}
 
 }

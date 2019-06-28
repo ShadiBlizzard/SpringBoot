@@ -1,11 +1,9 @@
 package com.spring.springboot.services.implementation;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.spring.springboot.dto.ExamsDto;
 import com.spring.springboot.entities.Course;
 import com.spring.springboot.entities.Exams;
 import com.spring.springboot.entities.ExamsId;
@@ -27,9 +25,6 @@ public class ExamsServiceImplementation implements ExamsService {
 	
 	@Autowired
 	private StudentRepository studentRepository;
-	
-	@Autowired
-	private ModelMapper modelMapper;
 
 	@Override
 	@Transactional(readOnly = false)
@@ -65,11 +60,4 @@ public class ExamsServiceImplementation implements ExamsService {
 		return exams;
 	}
 	
-	public ExamsDto convertExamstoDto(Exams exams) {
-		return modelMapper.map(exams, ExamsDto.class);
-	}
-	
-	public Exams convertDtoToExams(ExamsDto dto) {
-		return modelMapper.map(dto, Exams.class);
-	}
 }

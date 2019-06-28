@@ -3,14 +3,12 @@ package com.spring.springboot.services.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.spring.springboot.dto.CourseDto;
 import com.spring.springboot.entities.Course;
 import com.spring.springboot.repository.CoursesRepository;
 import com.spring.springboot.services.CourseService;
@@ -22,9 +20,6 @@ public class CourseServiceImplementation implements CourseService {
 	
 	@Autowired
 	private CoursesRepository coursesRepository;
-	
-	@Autowired
-	private ModelMapper modelMapper;
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -93,14 +88,6 @@ public class CourseServiceImplementation implements CourseService {
 		}
 		
 		return "The course you are tryng to delete doesn't exist";
-	}
-	
-	public CourseDto convertCourseToDto(Course course) {
-		return modelMapper.map(course, CourseDto.class);
-	}
-	
-	public Course convertDtoToCourse(CourseDto dto) {
-		return modelMapper.map(dto, Course.class);
 	}
 
 }
