@@ -14,12 +14,12 @@ public class MapperUtils {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	public <D, T> D map(final T entity, Class<D> outClass) {
-		return modelMapper.map(entity, outClass);
+	public <D, T> D map(final T ObjectToMap, Class<D> targetClass) {
+		return modelMapper.map(ObjectToMap, targetClass);
 	}
 
-	public <D, T> List<D> mapAll(final Collection<T> entityList, Class<D> outCLass) {
-		return entityList.stream().map(entity -> map(entity, outCLass)).collect(Collectors.toList());
+	public <D, T> List<D> mapAll(final Collection<T> listToMap, Class<D> targetClass) {
+		return listToMap.stream().map(entity -> map(entity, targetClass)).collect(Collectors.toList());
 	}
 
 }

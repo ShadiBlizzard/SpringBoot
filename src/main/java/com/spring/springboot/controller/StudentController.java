@@ -1,19 +1,21 @@
 package com.spring.springboot.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spring.springboot.dto.StudentDto;
 import com.spring.springboot.services.StudentService;
 
 
@@ -22,33 +24,44 @@ import com.spring.springboot.services.StudentService;
 @CrossOrigin(origins = "*")
 public class StudentController {
 	
+	
 	@Autowired
 	private StudentService studentService;
 	
 	@GetMapping("/{id}")
-	public String findStudentById(@PathVariable int id) {
-		return studentService.findStudentById(id);
+	public ResponseEntity<StudentDto> findStudentById(@RequestParam int id) {
+		StudentDto dto = studentService.findStudentById(id);
+		return new ResponseEntity<>(dto, HttpStatus.FOUND);
 	}
 	
 	@GetMapping("/all")
-	public List<String> findAll() {
-		return studentService.findAll();
+	public ResponseEntity<List<StudentDto>> findAll() {
+		List<StudentDto> listDto= studentService.findAll();
+		return new ResponseEntity<>(listDto, HttpStatus.FOUND);
+	}
+	
+	@PostMapping("/byname")
+	public ResponseEntity<List<StudentDto>> findStudentByNameAndSurname(@RequestBody StudentDto dto) {
+		List<StudentDto> responseDto = studentService.findStudentsByNameAndSurname(dto);
+		return new ResponseEntity<>(responseDto, HttpStatus.FOUND);
 	}
 	
 	@PostMapping("/new")
-	public String insertNewStudent(@RequestBody Map<String, String> body) {
-		System.out.println(studentService.save(body.get("name"), body.get("surname")));
-		return studentService.save(body.get("name"), body.get("surname"));
+	public ResponseEntity<StudentDto> insertNewStudent(@RequestBody StudentDto dto) {
+		StudentDto responseDto = studentService.save(dto);
+		return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/update/{id}")
-	public String updateStudent(@PathVariable int id, @RequestBody Map<String, String> body) {
-		return studentService.update(id, body.get("name"), body.get("surname"));
+	@PutMapping("/update")
+	public ResponseEntity<StudentDto> updateStudent(@RequestBody StudentDto dto) {
+		StudentDto responseDto = studentService.update(dto);
+		return new ResponseEntity<>(responseDto, HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/delete/{id}")
-	public String deleteStudent(@PathVariable int id) {
-		return studentService.delete(id);
+	@DeleteMapping("/delete")
+	public ResponseEntity<StudentDto> deleteStudent(@RequestBody StudentDto dto) {
+		StudentDto responseDto = studentService.delete(dto);
+		return new ResponseEntity<>(responseDto, HttpStatus.OK);
 	}
 
 }
