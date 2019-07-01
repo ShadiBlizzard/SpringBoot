@@ -3,6 +3,8 @@ package com.spring.springboot.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.springboot.entities.Exams;
-import com.spring.springboot.request.ExamsJsonRequest;
+import com.spring.springboot.dto.ExamsDto;
 import com.spring.springboot.services.ExamsService;
 
 @RestController
@@ -26,9 +27,10 @@ public class ExamsController {
 	private ExamsService examsService;
 	
 	@PostMapping("/save")
-	public Exams save(@RequestBody ExamsJsonRequest request) {
+	public ResponseEntity<ExamsDto> save(@RequestBody ExamsDto dto) {
 		try {
-			return  examsService.save(request.getStudent(), request.getCourse(), request.getEvaluation());
+			ExamsDto exam = examsService.save(dto);
+			return new ResponseEntity<>(exam, HttpStatus.CREATED);
 		} catch (Exception e) {
 			logger.error("Errore sulla insert: ", e);
 			return null;
@@ -36,9 +38,10 @@ public class ExamsController {
 	}
 	
 	@PutMapping("/update")
-	public Exams update(@RequestBody ExamsJsonRequest request) {
+	public ResponseEntity<ExamsDto> update(@RequestBody ExamsDto dto) {
 		try {
-			return  examsService.update(request.getStudent(), request.getCourse(), request.getEvaluation());
+			ExamsDto exam = examsService.update(dto);
+			return new ResponseEntity<>(exam, HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error("Errore sull'update: ", e);
 			return null;
@@ -46,10 +49,10 @@ public class ExamsController {
 	}
 	
 	@DeleteMapping("/delete")
-	public String delete(@RequestBody ExamsJsonRequest request) {
+	public ResponseEntity<ExamsDto> delete(@RequestBody ExamsDto dto) {
 		try {
-			examsService.delete(request.getStudent(), request.getCourse());
-			return "OK";
+			examsService.delete(dto);
+			return new ResponseEntity<>(dto, HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error("Errore sulla delete: ", e);
 			return null;
