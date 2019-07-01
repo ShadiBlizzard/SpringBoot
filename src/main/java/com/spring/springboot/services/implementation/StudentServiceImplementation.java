@@ -46,7 +46,7 @@ public class StudentServiceImplementation implements StudentService {
 	@Override
 	public StudentDto save(StudentDto dto) throws IllegalStateException {
 		if(dto.getId() != null)
-			throw new IllegalStateException();
+			throw new IllegalStateException("Errore! Stai tentando di fare un update ma devi fare un insert!");
 		Student student = mapper.map(dto, Student.class);
 		Student insert = studentRepository.save(student);
 		return mapper.map(insert, StudentDto.class);	
@@ -56,10 +56,10 @@ public class StudentServiceImplementation implements StudentService {
 	public StudentDto update(StudentDto dto) {
 		//controllo che ci sia un id da cercare
 		if(dto.getId() == null)
-			throw new IllegalStateException();
+			throw new IllegalStateException("Errore! Stai tentando di fare un insert ma devi fare un update!");
 		//controllo che questo id sia effettivamente presente nel db
 		if(findStudentById(dto.getId()).getId() == null)
-			throw new IllegalStateException();
+			throw new IllegalStateException("Errore! Oggetto non trovato sul db!");
 		Student student = mapper.map(dto, Student.class);
 		Student update = studentRepository.save(student);
 		return mapper.map(update, StudentDto.class);	
@@ -68,7 +68,7 @@ public class StudentServiceImplementation implements StudentService {
 	@Override
 	public StudentDto delete(StudentDto dto) {
 		if(findStudentById(dto.getId()).getId() == null)
-			throw new IllegalStateException();
+			throw new IllegalStateException("Errore! Oggetto non trovato sul db!");
 		Student student = mapper.map(dto, Student.class);
 		studentRepository.delete(student);
 		return dto;

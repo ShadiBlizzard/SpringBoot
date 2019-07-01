@@ -2,13 +2,16 @@ package com.spring.springboot.services;
 
 import java.util.List;
 
+import com.spring.springboot.dto.CourseDto;
+
 
 public interface CourseService {
 	
-	public String findByName(String name);
-	public String findDescriptionByName(String name);
-	public List<String> findAll();
-	public String save(String name, String description);
-	public String update(String name, String description);
-	public String delete(String name);
+	public CourseDto findById(Integer id);
+	public CourseDto findByName(String name);
+	public List<CourseDto> findAll();
+	public CourseDto save(CourseDto dto);
+	public CourseDto update(CourseDto dto);
+	public CourseDto delete(CourseDto dto);
+	
 }
