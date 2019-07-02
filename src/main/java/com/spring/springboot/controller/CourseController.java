@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.springboot.dto.CourseDto;
+import com.spring.springboot.exceptions.EmptyListException;
+import com.spring.springboot.exceptions.InvalidOperationException;
+import com.spring.springboot.exceptions.ObjNotFoundException;
 import com.spring.springboot.services.CourseService;
 
 
@@ -28,37 +31,37 @@ public class CourseController {
 	private CourseService courseService;
 	
 	@GetMapping("/name/{name}")
-	private ResponseEntity<CourseDto> findByName(@PathVariable String name) {
+	private ResponseEntity<CourseDto> findByName(@PathVariable String name) throws ObjNotFoundException {
 		CourseDto courseDto = courseService.findByName(name);
 		return new ResponseEntity<>(courseDto, HttpStatus.FOUND);
 	}
 	
 	@GetMapping("/id/{id}")
-	private ResponseEntity<CourseDto> findDescriptionFromName(@PathVariable Integer id) {
+	private ResponseEntity<CourseDto> findDescriptionFromName(@PathVariable Integer id) throws ObjNotFoundException {
 		CourseDto courseDto = courseService.findById(id);
 		return new ResponseEntity<>(courseDto, HttpStatus.FOUND);
 	}
 	
 	@GetMapping("/all")
-	private ResponseEntity<List<CourseDto>> findAll() {
+	private ResponseEntity<List<CourseDto>> findAll() throws EmptyListException {
 		List<CourseDto> listDto =  courseService.findAll();
 		return new ResponseEntity<>(listDto, HttpStatus.FOUND);
 	}
 	
 	@PostMapping("/new")
-	private ResponseEntity<CourseDto> saveNewCourse(@RequestBody CourseDto dto) {
+	private ResponseEntity<CourseDto> saveNewCourse(@RequestBody CourseDto dto) throws InvalidOperationException {
 		CourseDto courseDto = courseService.save(dto);
 		return new ResponseEntity<>(courseDto, HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/update")
-	private ResponseEntity<CourseDto> updateCourseDescription(@RequestBody CourseDto dto) {
+	private ResponseEntity<CourseDto> updateCourseDescription(@RequestBody CourseDto dto) throws InvalidOperationException, ObjNotFoundException {
 		CourseDto courseDto = courseService.update(dto);
 		return new ResponseEntity<>(courseDto, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/delete")
-	private ResponseEntity<CourseDto> delete(@RequestBody CourseDto dto) {
+	private ResponseEntity<CourseDto> delete(@RequestBody CourseDto dto) throws ObjNotFoundException {
 		CourseDto courseDto = courseService.delete(dto);
 		return new ResponseEntity<>(courseDto, HttpStatus.OK);
 	}

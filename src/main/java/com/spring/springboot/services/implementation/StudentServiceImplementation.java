@@ -67,7 +67,7 @@ public class StudentServiceImplementation implements StudentService {
 		if(dto.getId() == null)
 			throw new InvalidOperationException("Errore! Stai tentando di fare un insert ma devi fare un update!");
 		//controllo che questo id sia effettivamente presente nel db
-		if(findStudentById(dto.getId()).getId() == null)
+		if(!studentRepository.findById(dto.getId()).isPresent())
 			throw new ObjNotFoundException("Student with id " + dto.getId() + " has not been found");
 		Student student = mapper.map(dto, Student.class);
 		Student update = studentRepository.save(student);
@@ -76,7 +76,7 @@ public class StudentServiceImplementation implements StudentService {
 
 	@Override
 	public StudentDto delete(StudentDto dto) throws ObjNotFoundException {
-		if(findStudentById(dto.getId()).getId() == null)
+		if(!studentRepository.findById(dto.getId()).isPresent())
 			throw new ObjNotFoundException("Student with id " + dto.getId() + " has not been found");
 		Student student = mapper.map(dto, Student.class);
 		studentRepository.delete(student);
