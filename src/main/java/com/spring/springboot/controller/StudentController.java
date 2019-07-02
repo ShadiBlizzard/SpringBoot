@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.springboot.dto.StudentDto;
+import com.spring.springboot.exceptions.EmptyListException;
+import com.spring.springboot.exceptions.InvalidOperationException;
+import com.spring.springboot.exceptions.ObjNotFoundException;
 import com.spring.springboot.services.StudentService;
 
 
@@ -29,37 +32,37 @@ public class StudentController {
 	private StudentService studentService;
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<StudentDto> findStudentById(@PathVariable("id") int id) {
+	public ResponseEntity<StudentDto> findStudentById(@PathVariable("id") int id) throws ObjNotFoundException {
 		StudentDto dto = studentService.findStudentById(id);
 		return new ResponseEntity<>(dto, HttpStatus.FOUND);
 	}
 	
 	@GetMapping("/all")
-	public ResponseEntity<List<StudentDto>> findAll() {
+	public ResponseEntity<List<StudentDto>> findAll() throws EmptyListException {
 		List<StudentDto> listDto= studentService.findAll();
 		return new ResponseEntity<>(listDto, HttpStatus.FOUND);
 	}
 	
 	@PostMapping("/byname")
-	public ResponseEntity<List<StudentDto>> findStudentByNameAndSurname(@RequestBody StudentDto dto) {
+	public ResponseEntity<List<StudentDto>> findStudentByNameAndSurname(@RequestBody StudentDto dto) throws ObjNotFoundException {
 		List<StudentDto> responseDto = studentService.findStudentsByNameAndSurname(dto);
 		return new ResponseEntity<>(responseDto, HttpStatus.FOUND);
 	}
 	
 	@PostMapping("/new")
-	public ResponseEntity<StudentDto> insertNewStudent(@RequestBody StudentDto dto) {
+	public ResponseEntity<StudentDto> insertNewStudent(@RequestBody StudentDto dto) throws InvalidOperationException {
 		StudentDto responseDto = studentService.save(dto);
 		return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<StudentDto> updateStudent(@RequestBody StudentDto dto) {
+	public ResponseEntity<StudentDto> updateStudent(@RequestBody StudentDto dto) throws ObjNotFoundException, InvalidOperationException {
 		StudentDto responseDto = studentService.update(dto);
 		return new ResponseEntity<>(responseDto, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/delete")
-	public ResponseEntity<StudentDto> deleteStudent(@RequestBody StudentDto dto) {
+	public ResponseEntity<StudentDto> deleteStudent(@RequestBody StudentDto dto) throws ObjNotFoundException {
 		StudentDto responseDto = studentService.delete(dto);
 		return new ResponseEntity<>(responseDto, HttpStatus.OK);
 	}
