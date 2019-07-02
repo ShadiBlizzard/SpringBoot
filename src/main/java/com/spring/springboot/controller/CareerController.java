@@ -2,16 +2,17 @@ package com.spring.springboot.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.springboot.entities.Career;
+import com.spring.springboot.dto.CareerDto;
 import com.spring.springboot.services.CareerService;
 
 @RestController
@@ -23,27 +24,27 @@ public class CareerController {
 	private CareerService careerService;
 	
 	@GetMapping("/all")
-	public List<Career> all(HttpServletResponse response){
-		return careerService.findAll();
+	public ResponseEntity<List<CareerDto>> all(){
+		List<CareerDto> careers = careerService.findAll();
+		return new ResponseEntity<>(careers, HttpStatus.FOUND);
 	}
 	
-	@GetMapping("/student/{name}/{surname}")
-	public List<Career> byStudent(@PathVariable String name, @PathVariable String surname){
-		return careerService.findByStudent(name, surname);
+	@PostMapping("/bystudent")
+	public ResponseEntity<List<CareerDto>> byStudent(@RequestBody CareerDto dto){
+		List<CareerDto> careers = careerService.findByStudent(dto);
+		return new ResponseEntity<>(careers, HttpStatus.FOUND);
 	}
 	
-	@GetMapping("/course/{coursename}")
-	public List<Career> byCourse(@PathVariable String coursename){
-		return careerService.findByCourse(coursename);
+	@PostMapping("/bycourse")
+	public ResponseEntity<List<CareerDto>> byCourse(@RequestBody CareerDto dto){
+		List<CareerDto> careers = careerService.findByCourse(dto);
+		return new ResponseEntity<>(careers, HttpStatus.FOUND);
 	}
 	
-	@GetMapping("/course/{coursename}/evaluation/{evl}")
-	public List<Career> byCourseAndEvaluation(@PathVariable String coursename, @PathVariable String evl){
-		return careerService.findByCourseAndEvaluation(coursename, evl);
+	@PostMapping("/bycoursewithevaluation")
+	public ResponseEntity<List<CareerDto>> byCourseAndEvaluation(@RequestBody CareerDto dto){
+		List<CareerDto> careers = careerService.findByCourseAndEvaluation(dto);
+		return new ResponseEntity<>(careers, HttpStatus.FOUND);
 	}
-	
-	
-	
-	
 
 }
