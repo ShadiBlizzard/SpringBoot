@@ -33,27 +33,37 @@ public class ExamsServiceImplementation implements ExamsService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public ExamsDto save(ExamsDto dto) {
+	public ExamsDto save(ExamsDto dto) throws IllegalStateException{
 		Exams exam = persistExams(dto.getExamsId().getStudent().getId(), dto.getExamsId().getCourse().getName(), dto.getEvaluation(), true);
+		if(exam == null)
+			throw new IllegalStateException();
 		return mapper.map(exam, ExamsDto.class);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public ExamsDto update(ExamsDto dto){
+	public ExamsDto update(ExamsDto dto) throws IllegalStateException{
 		Exams exam = persistExams(dto.getExamsId().getStudent().getId(), dto.getExamsId().getCourse().getName(), dto.getEvaluation(), false);
+		if(exam == null)
+			throw new IllegalStateException();
 		return mapper.map(exam, ExamsDto.class);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public ExamsDto delete(ExamsDto dto){
-		examsRepository.delete(getExams(dto.getExamsId().getStudent().getId(), dto.getExamsId().getCourse().getName(), dto.getEvaluation(), false));
+	public ExamsDto delete(ExamsDto dto) throws IllegalStateException{
+		Exams exam = getExams(dto.getExamsId().getStudent().getId(), dto.getExamsId().getCourse().getName(), dto.getEvaluation(), false);
+		if(exam == null)
+			throw new IllegalStateException();
+		examsRepository.delete(exam);
 		return dto;
 	}
 
 	private Exams persistExams(Integer student, String course, Integer evaluation, boolean isExisting) throws IllegalStateException{
-		return examsRepository.save(getExams(student, course, evaluation, isExisting));	
+		Exams exam = getExams(student, course, evaluation, isExisting);
+		if(exam == null)
+			throw new IllegalStateException();
+		return examsRepository.save(exam);	
 	}	
 	
 	private Exams getExams(Integer student, String course, Integer evaluation, boolean isExisting) throws IllegalStateException {
