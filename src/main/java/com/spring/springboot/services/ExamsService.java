@@ -1,11 +1,11 @@
 package com.spring.springboot.services;
 
-import com.spring.springboot.entities.Exams;
+import com.spring.springboot.dto.ExamsDto;
 
 public interface ExamsService {
 	
-	public Exams save(Integer student, String course, Integer evaluation) throws Exception;
-	public Exams update(Integer student, String course, Integer evaluation) throws Exception;
-	public void delete(Integer student, String course) throws Exception;
+	public ExamsDto save(ExamsDto dto);
+	public ExamsDto update(ExamsDto dto);
+	public ExamsDto delete(ExamsDto dto);
 
 }

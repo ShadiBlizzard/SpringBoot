@@ -1,9 +1,10 @@
 package com.spring.springboot.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spring.springboot.dto.CourseDto;
 import com.spring.springboot.services.CourseService;
 
 
@@ -25,46 +27,41 @@ public class CourseController {
 	@Autowired
 	private CourseService courseService;
 	
-	@GetMapping("/{name}")
-	private String findOne(@PathVariable String name) {
-		return courseService.findByName(name);
+	@GetMapping("/name/{name}")
+	private ResponseEntity<CourseDto> findByName(@PathVariable String name) {
+		CourseDto courseDto = courseService.findByName(name);
+		return new ResponseEntity<>(courseDto, HttpStatus.FOUND);
 	}
 	
-	@GetMapping("/description/{name}")
-	private String findDescriptionFromName(@PathVariable String name) {
-		return courseService.findDescriptionByName(name);
+	@GetMapping("/id/{id}")
+	private ResponseEntity<CourseDto> findDescriptionFromName(@PathVariable Integer id) {
+		CourseDto courseDto = courseService.findById(id);
+		return new ResponseEntity<>(courseDto, HttpStatus.FOUND);
 	}
 	
 	@GetMapping("/all")
-	private List<String> findAll() {
-		return courseService.findAll();
+	private ResponseEntity<List<CourseDto>> findAll() {
+		List<CourseDto> listDto =  courseService.findAll();
+		return new ResponseEntity<>(listDto, HttpStatus.FOUND);
 	}
 	
 	@PostMapping("/new")
-	private String saveNewCourse(@RequestBody Map<String, String> body) {
-		String name = body.get("name");
-		String description = body.get("description");
-		
-		return courseService.save(name, description);
+	private ResponseEntity<CourseDto> saveNewCourse(@RequestBody CourseDto dto) {
+		CourseDto courseDto = courseService.save(dto);
+		return new ResponseEntity<>(courseDto, HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/update/{name}")
-	private String updateCourseDescription(@PathVariable String name, @RequestBody Map<String, String> body) {
-		return courseService.update(name, body.get("description"));
+	@PutMapping("/update")
+	private ResponseEntity<CourseDto> updateCourseDescription(@RequestBody CourseDto dto) {
+		CourseDto courseDto = courseService.update(dto);
+		return new ResponseEntity<>(courseDto, HttpStatus.OK);
 	}
 	
-	/**
-	 * it deletes a course and all the exams informations related to it (operates with CASCADE)
-	 * @param name
-	 * @return
-	 */
-	@DeleteMapping("/delete/{name}")
-	private String delete(@PathVariable String name) {
-		return courseService.delete(name);
-		
+	@DeleteMapping("/delete")
+	private ResponseEntity<CourseDto> delete(@RequestBody CourseDto dto) {
+		CourseDto courseDto = courseService.delete(dto);
+		return new ResponseEntity<>(courseDto, HttpStatus.OK);
 	}
-	
-	
-	
+
 	
 }

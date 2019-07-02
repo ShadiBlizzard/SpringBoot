@@ -4,17 +4,19 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.springboot.entities.Career;
 import com.spring.springboot.repository.CareerRepository;
 import com.spring.springboot.services.CareerService;
 
 @Service
+@Transactional(readOnly = true)
 public class CareerServiceImplementation implements CareerService {
 	
 	@Autowired
 	private CareerRepository careerRepository;
-
+	
 	@Override
 	public List<Career> findAll() {
 		return careerRepository.findAll();
@@ -34,8 +36,5 @@ public class CareerServiceImplementation implements CareerService {
 	public List<Career> findByCourseAndEvaluation(String course, String evaluation) {
 		return careerRepository.findCareerByCourseAndEvaluation(course, evaluation);
 	}
-	
-	
-	
 
 }

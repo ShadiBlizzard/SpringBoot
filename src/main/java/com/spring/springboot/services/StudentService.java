@@ -2,15 +2,15 @@ package com.spring.springboot.services;
 
 import java.util.List;
 
-
-
+import com.spring.springboot.dto.StudentDto;
 
 public interface StudentService {
 	
-	public String findStudentById(int id);
-	public List<String> findAll();
-	public String save(String name, String surname);
-	public String update(int id, String name, String surname);
-	public String delete(int id);
+	public StudentDto findStudentById(int id);
+	public List<StudentDto> findAll();
+	public List<StudentDto> findStudentsByNameAndSurname(StudentDto dto);
+	public StudentDto save(StudentDto dto) throws IllegalStateException;
+	public StudentDto update(StudentDto dto) throws IllegalStateException;
+	public StudentDto delete(StudentDto dto);
 
 }
