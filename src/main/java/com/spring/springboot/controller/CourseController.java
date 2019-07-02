@@ -62,6 +62,7 @@ public class CourseController {
 	
 	@DeleteMapping("/delete")
 	public ResponseEntity<CourseDto> delete(@RequestBody CourseDto dto) throws ObjNotFoundException {
+
 		CourseDto courseDto = courseService.delete(dto);
 		return new ResponseEntity<>(courseDto, HttpStatus.OK);
 	}
