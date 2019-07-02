@@ -16,6 +16,7 @@ import com.spring.springboot.exceptions.ObjNotFoundException;
 import com.spring.springboot.repository.CoursesRepository;
 import com.spring.springboot.services.CourseService;
 import com.spring.springboot.utils.MapperUtils;
+import com.spring.springboot.utils.StringUtils;
 
 @Service
 @Transactional(readOnly = false)
@@ -33,7 +34,7 @@ public class CourseServiceImplementation implements CourseService {
 	@Transactional(readOnly = true)
 	public CourseDto findById(Integer id) throws ObjNotFoundException {
 		if(!coursesRepository.findById(id).isPresent()) 
-			throw new ObjNotFoundException("No courses of id " + id + " has been found.");
+			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.COURSE, "id", id));
 		return mapper.map(coursesRepository.findById(id).get(), CourseDto.class);
 	}
 	
@@ -42,7 +43,7 @@ public class CourseServiceImplementation implements CourseService {
 	public CourseDto findByName(String name) throws ObjNotFoundException {
 		Course course = coursesRepository.findByName(name);
 		if(course == null)
-			throw new ObjNotFoundException("Course of name " + name + " was not found." );
+			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_NAME, StringUtils.COURSE, "name", name));
 		return mapper.map(course, CourseDto.class);
 	}
 
@@ -51,7 +52,7 @@ public class CourseServiceImplementation implements CourseService {
 	public List<CourseDto> findAll() throws EmptyListException {
 		List<Course> courses = coursesRepository.findAll();
 		if (courses.isEmpty())
-			throw new EmptyListException("No courses were found");
+			throw new EmptyListException(String.format(StringUtils.EMPTY_LIST, StringUtils.COURSE + "s"));
 		logger.debug(courses.size() + " courses founded.");
 		return mapper.mapAll(courses, CourseDto.class);
 	}
@@ -59,7 +60,7 @@ public class CourseServiceImplementation implements CourseService {
 	@Override
 	public CourseDto save(CourseDto dto) throws InvalidOperationException {
 		if(dto.getId()!=null)
-			throw new InvalidOperationException("Errore! Stai tentando di fare un update ma devi fare un insert!");
+			throw new InvalidOperationException(StringUtils.INVALID_UPDATE_OP);
 		Course course = mapper.map(dto, Course.class);
 		Course insert = coursesRepository.save(course);
 		return mapper.map(insert, CourseDto.class);
@@ -69,10 +70,10 @@ public class CourseServiceImplementation implements CourseService {
 	public CourseDto update(CourseDto dto) throws InvalidOperationException, ObjNotFoundException {
 		//controllo che ci sia un id da cercare
 		if(dto.getId() == null)
-			throw new InvalidOperationException("Errore! Stai tentando di fare un insert ma devi fare un update!");
+			throw new InvalidOperationException(StringUtils.INVALID_INSERT_OP);
 		//controllo che questo id sia effettivamente presente nel db
 		if(!coursesRepository.findById(dto.getId()).isPresent())
-			throw new ObjNotFoundException("No courses of id " + dto.getId() + " has been found.");
+			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.COURSE, "id", dto.getId()));
 		Course course = mapper.map(dto, Course.class);
 		Course update = coursesRepository.save(course);
 		return mapper.map(update, CourseDto.class);
@@ -81,7 +82,7 @@ public class CourseServiceImplementation implements CourseService {
 	@Override
 	public CourseDto delete(CourseDto dto) throws ObjNotFoundException {
 		if(!coursesRepository.findById(dto.getId()).isPresent())
-			throw new ObjNotFoundException("No courses of id " + dto.getId() + " has been found.");
+			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.COURSE, "id", dto.getId()));
 		Course course = mapper.map(dto, Course.class);
 		coursesRepository.delete(course);
 		return dto;

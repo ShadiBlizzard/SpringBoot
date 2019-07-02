@@ -13,6 +13,7 @@ import com.spring.springboot.exceptions.ObjNotFoundException;
 import com.spring.springboot.repository.StudentRepository;
 import com.spring.springboot.services.StudentService;
 import com.spring.springboot.utils.MapperUtils;
+import com.spring.springboot.utils.StringUtils;
 
 @Service
 @Transactional(readOnly = false)
@@ -27,9 +28,8 @@ public class StudentServiceImplementation implements StudentService {
 	@Override
 	@Transactional(readOnly = true)
 	public StudentDto findStudentById(int id) throws ObjNotFoundException {
-		//Student student = studentRepository.findById(id).get();
 		if(!studentRepository.findById(id).isPresent())
-			throw new ObjNotFoundException("Student of id " + id + " has not been found");
+			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.STUDENT, "id", id));
 		return mapper.map(studentRepository.findById(id).get(), StudentDto.class);
 	}
 
@@ -38,7 +38,7 @@ public class StudentServiceImplementation implements StudentService {
 	public List<StudentDto> findAll() throws EmptyListException {
 		List<Student> students = studentRepository.findAll();
 		if(students.isEmpty())
-			throw new EmptyListException("No students were found");
+			throw new EmptyListException(String.format(StringUtils.EMPTY_LIST, StringUtils.STUDENT + "s"));
 		return mapper.mapAll(students, StudentDto.class);	
 	}
 
@@ -48,14 +48,14 @@ public class StudentServiceImplementation implements StudentService {
 		List<Student> students = studentRepository.findByNameAndSurname(dto.getName(), dto.getSurname());
 		
 		if(students.isEmpty()) 
-			throw new ObjNotFoundException("No student named " + dto.getName() + " " + dto.getSurname() + " was found.");
+			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_NAME, StringUtils.STUDENT, "name and surname", dto.getName() + " " + dto.getSurname()));
 		return mapper.mapAll(students, StudentDto.class);
 	}
 
 	@Override
 	public StudentDto save(StudentDto dto) throws InvalidOperationException {
 		if(dto.getId() != null)
-			throw new InvalidOperationException("Errore! Stai tentando di fare un update ma devi fare un insert!");
+			throw new InvalidOperationException(StringUtils.INVALID_UPDATE_OP);
 		Student student = mapper.map(dto, Student.class);
 		Student insert = studentRepository.save(student);
 		return mapper.map(insert, StudentDto.class);	
@@ -65,10 +65,10 @@ public class StudentServiceImplementation implements StudentService {
 	public StudentDto update(StudentDto dto) throws ObjNotFoundException, InvalidOperationException {
 		//controllo che ci sia un id da cercare
 		if(dto.getId() == null)
-			throw new InvalidOperationException("Errore! Stai tentando di fare un insert ma devi fare un update!");
+			throw new InvalidOperationException(StringUtils.INVALID_INSERT_OP);
 		//controllo che questo id sia effettivamente presente nel db
 		if(!studentRepository.findById(dto.getId()).isPresent())
-			throw new ObjNotFoundException("Student with id " + dto.getId() + " has not been found");
+			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.STUDENT, "id", dto.getId()));
 		Student student = mapper.map(dto, Student.class);
 		Student update = studentRepository.save(student);
 		return mapper.map(update, StudentDto.class);	
@@ -77,7 +77,7 @@ public class StudentServiceImplementation implements StudentService {
 	@Override
 	public StudentDto delete(StudentDto dto) throws ObjNotFoundException {
 		if(!studentRepository.findById(dto.getId()).isPresent())
-			throw new ObjNotFoundException("Student with id " + dto.getId() + " has not been found");
+			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.STUDENT, "id", dto.getId()));
 		Student student = mapper.map(dto, Student.class);
 		studentRepository.delete(student);
 		return dto;
