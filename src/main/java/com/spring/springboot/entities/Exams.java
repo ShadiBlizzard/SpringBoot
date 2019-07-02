@@ -1,7 +1,6 @@
 package com.spring.springboot.entities;
 
 import javax.persistence.AssociationOverride;
-import javax.persistence.AssociationOverrides;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -10,11 +9,11 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "exams")
-@AssociationOverrides({ @AssociationOverride(name = "examsId.student", joinColumns = @JoinColumn(name = "idstudent")),
-		@AssociationOverride(name = "examsId.course", joinColumns = @JoinColumn(name = "idcourse")) })
+@AssociationOverride(name = "examsId.student", joinColumns = @JoinColumn(name = "idstudent"))
+@AssociationOverride(name = "examsId.course", joinColumns = @JoinColumn(name = "idcourse"))
 public class Exams {
 
-	private ExamsId examsId; // = new ExamsId();
+	private ExamsId examsId;
 	
 	@NotNull
 	private Integer evaluation;

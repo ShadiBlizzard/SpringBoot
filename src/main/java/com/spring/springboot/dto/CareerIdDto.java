@@ -1,6 +1,10 @@
 package com.spring.springboot.dto;
 
-public class CareerIdDto {
+import java.io.Serializable;
+
+public class CareerIdDto implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	private String studentname;
 	private String studentsurname;
