@@ -28,37 +28,37 @@ public class CourseController {
 	private CourseService courseService;
 	
 	@GetMapping("/name/{name}")
-	private ResponseEntity<CourseDto> findByName(@PathVariable String name) {
+	public ResponseEntity<CourseDto> findByName(@PathVariable String name) {
 		CourseDto courseDto = courseService.findByName(name);
 		return new ResponseEntity<>(courseDto, HttpStatus.FOUND);
 	}
 	
 	@GetMapping("/id/{id}")
-	private ResponseEntity<CourseDto> findDescriptionFromName(@PathVariable Integer id) {
+	public ResponseEntity<CourseDto> findDescriptionFromName(@PathVariable Integer id) {
 		CourseDto courseDto = courseService.findById(id);
 		return new ResponseEntity<>(courseDto, HttpStatus.FOUND);
 	}
 	
 	@GetMapping("/all")
-	private ResponseEntity<List<CourseDto>> findAll() {
+	public ResponseEntity<List<CourseDto>> findAll() {
 		List<CourseDto> listDto =  courseService.findAll();
 		return new ResponseEntity<>(listDto, HttpStatus.FOUND);
 	}
 	
 	@PostMapping("/new")
-	private ResponseEntity<CourseDto> saveNewCourse(@RequestBody CourseDto dto) {
+	public ResponseEntity<CourseDto> saveNewCourse(@RequestBody CourseDto dto) {
 		CourseDto courseDto = courseService.save(dto);
 		return new ResponseEntity<>(courseDto, HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/update")
-	private ResponseEntity<CourseDto> updateCourseDescription(@RequestBody CourseDto dto) {
+	public ResponseEntity<CourseDto> updateCourseDescription(@RequestBody CourseDto dto) {
 		CourseDto courseDto = courseService.update(dto);
 		return new ResponseEntity<>(courseDto, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/delete")
-	private ResponseEntity<CourseDto> delete(@RequestBody CourseDto dto) {
+	public ResponseEntity<CourseDto> delete(@RequestBody CourseDto dto) {
 		CourseDto courseDto = courseService.delete(dto);
 		return new ResponseEntity<>(courseDto, HttpStatus.OK);
 	}
