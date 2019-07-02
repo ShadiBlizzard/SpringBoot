@@ -14,8 +14,8 @@ public class MapperUtils {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	public <D, T> D map(final T ObjectToMap, Class<D> targetClass) {
-		return modelMapper.map(ObjectToMap, targetClass);
+	public <D, T> D map(final T objectToMap, Class<D> targetClass) {
+		return modelMapper.map(objectToMap, targetClass);
 	}
 
 	public <D, T> List<D> mapAll(final Collection<T> listToMap, Class<D> targetClass) {

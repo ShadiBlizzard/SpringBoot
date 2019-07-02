@@ -8,6 +8,6 @@ import com.spring.springboot.entities.Student;
 
 public interface StudentRepository extends JpaRepository<Student, Integer> {
 	
-	List<Student> findByNameAndSurname(String name, String Surname);
+	List<Student> findByNameAndSurname(String name, String surname);
 	
 }
