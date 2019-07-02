@@ -1,11 +1,11 @@
 package com.spring.springboot.services;
 
-import com.spring.springboot.entities.Images;
+import com.spring.springboot.dto.ImagesDto;
 
 public interface ImagesService {
 
-	public Images findById(Integer student);
-	public Images save(Integer student, byte[] image);
-	public String delete(int student);
-	public Images update(int student, byte[] image);
+	public ImagesDto findById(Integer student);
+	public ImagesDto save(ImagesDto dto);
+	public ImagesDto delete(ImagesDto dto);
+	public ImagesDto update(ImagesDto dto);
 }
