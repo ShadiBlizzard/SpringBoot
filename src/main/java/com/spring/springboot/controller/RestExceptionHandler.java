@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.spring.springboot.exceptions.ApiError;
 import com.spring.springboot.exceptions.EmptyListException;
+import com.spring.springboot.exceptions.ExamAlreadyRegisteredException;
 import com.spring.springboot.exceptions.InvalidOperationException;
 import com.spring.springboot.exceptions.ObjNotFoundException;
 
@@ -59,5 +60,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		logger.info(ex.getStackTrace().toString());
 		return buildResponseEntity(apiError);
 	}
+	
+	@ExceptionHandler(ExamAlreadyRegisteredException.class)
+	private ResponseEntity<Object> handleExamAlreadyRegistered(ExamAlreadyRegisteredException ex) {
+		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+		logger.info(ex.getStackTrace().toString());
+		return buildResponseEntity(apiError);
+	}
+	
+	
 
 }
