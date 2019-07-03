@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spring.springboot.dto.ExamsDto;
 import com.spring.springboot.exceptions.ExamAlreadyRegisteredException;
 import com.spring.springboot.exceptions.ObjNotFoundException;
+import com.spring.springboot.exceptions.UnexistingExamException;
 import com.spring.springboot.services.ExamsService;
 
 @RestController
@@ -25,19 +26,19 @@ public class ExamsController {
 	private ExamsService examsService;
 	
 	@PostMapping("/save")
-	public ResponseEntity<ExamsDto> save(@RequestBody ExamsDto dto) throws ObjNotFoundException, ExamAlreadyRegisteredException {
+	public ResponseEntity<ExamsDto> save(@RequestBody ExamsDto dto) throws ObjNotFoundException, ExamAlreadyRegisteredException, UnexistingExamException {
 		ExamsDto exam = examsService.save(dto);
 		return new ResponseEntity<>(exam, HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<ExamsDto> update(@RequestBody ExamsDto dto) throws ObjNotFoundException, ExamAlreadyRegisteredException {
+	public ResponseEntity<ExamsDto> update(@RequestBody ExamsDto dto) throws ObjNotFoundException, ExamAlreadyRegisteredException, UnexistingExamException {
 		ExamsDto exam = examsService.update(dto);
 		return new ResponseEntity<>(exam, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/delete")
-	public ResponseEntity<ExamsDto> delete(@RequestBody ExamsDto dto) throws ObjNotFoundException, ExamAlreadyRegisteredException {
+	public ResponseEntity<ExamsDto> delete(@RequestBody ExamsDto dto) throws ObjNotFoundException, ExamAlreadyRegisteredException, UnexistingExamException {
 		examsService.delete(dto);
 		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}

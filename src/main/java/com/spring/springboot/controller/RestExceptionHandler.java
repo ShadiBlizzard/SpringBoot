@@ -16,6 +16,7 @@ import com.spring.springboot.exceptions.EmptyListException;
 import com.spring.springboot.exceptions.ExamAlreadyRegisteredException;
 import com.spring.springboot.exceptions.InvalidOperationException;
 import com.spring.springboot.exceptions.ObjNotFoundException;
+import com.spring.springboot.exceptions.UnexistingExamException;
 
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -42,26 +43,22 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return buildResponseEntity(apiError);
 	}
 	
-	@ExceptionHandler(InvalidOperationException.class)
-	private ResponseEntity<Object> handleInvalidOperation(InvalidOperationException ex) {
-		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
-		logger.info(ex.getMessage(), ex);
-		return buildResponseEntity(apiError);
-	}
-	
 	@ExceptionHandler(EmptyListException.class)
 	private ResponseEntity<Object> handleEmptyList(EmptyListException ex) {
 		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
+		apiError.setMsg(ex.getMessage());
 		logger.info(ex.getMessage(), ex);
 		return buildResponseEntity(apiError);
 	}
 	
-	@ExceptionHandler(ExamAlreadyRegisteredException.class)
+	@ExceptionHandler({ExamAlreadyRegisteredException.class, UnexistingExamException.class, InvalidOperationException.class})
 	private ResponseEntity<Object> handleExamAlreadyRegistered(ExamAlreadyRegisteredException ex) {
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+		apiError.setMsg(ex.getMessage());
 		logger.info(ex.getMessage(), ex);
 		return buildResponseEntity(apiError);
 	}
+	
 	
 	
 

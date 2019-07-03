@@ -13,6 +13,7 @@ import com.spring.springboot.entities.ExamsId;
 import com.spring.springboot.entities.Student;
 import com.spring.springboot.exceptions.ExamAlreadyRegisteredException;
 import com.spring.springboot.exceptions.ObjNotFoundException;
+import com.spring.springboot.exceptions.UnexistingExamException;
 import com.spring.springboot.repository.CoursesRepository;
 import com.spring.springboot.repository.ExamsRepository;
 import com.spring.springboot.repository.StudentRepository;
@@ -38,21 +39,21 @@ public class ExamsServiceImplementation implements ExamsService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public ExamsDto save(ExamsDto dto) throws ObjNotFoundException, ExamAlreadyRegisteredException {
+	public ExamsDto save(ExamsDto dto) throws ObjNotFoundException, ExamAlreadyRegisteredException, UnexistingExamException {
 		Exams exam = persistExams(dto.getExamsId().getStudent().getId(), dto.getExamsId().getCourse().getName(), dto.getEvaluation(), true);
 		return mapper.map(exam, ExamsDto.class);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public ExamsDto update(ExamsDto dto) throws ObjNotFoundException, ExamAlreadyRegisteredException{
+	public ExamsDto update(ExamsDto dto) throws ObjNotFoundException, ExamAlreadyRegisteredException, UnexistingExamException{
 		Exams exam = persistExams(dto.getExamsId().getStudent().getId(), dto.getExamsId().getCourse().getName(), dto.getEvaluation(), false);
 		return mapper.map(exam, ExamsDto.class);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public ExamsDto delete(ExamsDto dto) throws ObjNotFoundException, ExamAlreadyRegisteredException{
+	public ExamsDto delete(ExamsDto dto) throws ObjNotFoundException, ExamAlreadyRegisteredException, UnexistingExamException{
 		Exams exam = getExams(dto.getExamsId().getStudent().getId(), dto.getExamsId().getCourse().getName(), dto.getEvaluation(), false);
 		if(exam == null)
 			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_EXAM, dto.getExamsId().getCourse(), dto.getExamsId().getStudent()));
@@ -60,14 +61,14 @@ public class ExamsServiceImplementation implements ExamsService {
 		return dto;
 	}
 
-	private Exams persistExams(Integer student, String course, Integer evaluation, boolean isExisting) throws  ObjNotFoundException, ExamAlreadyRegisteredException{
+	private Exams persistExams(Integer student, String course, Integer evaluation, boolean isExisting) throws  ObjNotFoundException, ExamAlreadyRegisteredException, UnexistingExamException{
 		Exams exam = getExams(student, course, evaluation, isExisting);
 		if(exam == null)
 			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_EXAM, course, student));
 		return examsRepository.save(exam);	
 	}	
 	
-	private Exams getExams(Integer student, String course, Integer evaluation, boolean isExisting) throws ObjNotFoundException, ExamAlreadyRegisteredException {
+	private Exams getExams(Integer student, String course, Integer evaluation, boolean isExisting) throws ObjNotFoundException, ExamAlreadyRegisteredException, UnexistingExamException {
 		Optional<Student> studentExams = studentRepository.findById(student);
 		if(!studentExams.isPresent())
 			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.STUDENT, "id", student));
@@ -77,7 +78,11 @@ public class ExamsServiceImplementation implements ExamsService {
 		ExamsId examsId = new ExamsId(studentExams.get(), courseExams);
 		
 		if(examsRepository.existsById(examsId)==isExisting) 
-			throw new ExamAlreadyRegisteredException(String.format(StringUtils.EXAM_ALREADY_REGISTERED, course, student));
+			if(isExisting)
+				throw new ExamAlreadyRegisteredException(String.format(StringUtils.EXAM_ALREADY_REGISTERED, course, student));
+			else 
+				throw new UnexistingExamException(String.format(StringUtils.EXAM_UNEXISTING, course));
+
 		
 		return new Exams(examsId, evaluation);
 		
