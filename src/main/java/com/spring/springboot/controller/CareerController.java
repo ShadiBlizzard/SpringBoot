@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.springboot.dto.CareerDto;
+import com.spring.springboot.exceptions.EmptyListException;
+import com.spring.springboot.exceptions.ObjNotFoundException;
 import com.spring.springboot.services.CareerService;
 
 @RestController
@@ -24,25 +26,25 @@ public class CareerController {
 	private CareerService careerService;
 	
 	@GetMapping("/all")
-	public ResponseEntity<List<CareerDto>> all(){
+	public ResponseEntity<List<CareerDto>> all() throws EmptyListException{
 		List<CareerDto> careers = careerService.findAll();
 		return new ResponseEntity<>(careers, HttpStatus.FOUND);
 	}
 	
 	@PostMapping("/bystudent")
-	public ResponseEntity<List<CareerDto>> byStudent(@RequestBody CareerDto dto){
+	public ResponseEntity<List<CareerDto>> byStudent(@RequestBody CareerDto dto) throws ObjNotFoundException, EmptyListException{
 		List<CareerDto> careers = careerService.findByStudent(dto);
 		return new ResponseEntity<>(careers, HttpStatus.FOUND);
 	}
 	
 	@PostMapping("/bycourse")
-	public ResponseEntity<List<CareerDto>> byCourse(@RequestBody CareerDto dto){
+	public ResponseEntity<List<CareerDto>> byCourse(@RequestBody CareerDto dto) throws ObjNotFoundException, EmptyListException{
 		List<CareerDto> careers = careerService.findByCourse(dto);
 		return new ResponseEntity<>(careers, HttpStatus.FOUND);
 	}
 	
 	@PostMapping("/bycoursewithevaluation")
-	public ResponseEntity<List<CareerDto>> byCourseAndEvaluation(@RequestBody CareerDto dto){
+	public ResponseEntity<List<CareerDto>> byCourseAndEvaluation(@RequestBody CareerDto dto) throws ObjNotFoundException{
 		List<CareerDto> careers = careerService.findByCourseAndEvaluation(dto);
 		return new ResponseEntity<>(careers, HttpStatus.FOUND);
 	}
