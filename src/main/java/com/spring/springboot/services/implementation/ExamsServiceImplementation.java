@@ -1,5 +1,7 @@
 package com.spring.springboot.services.implementation;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,11 +11,14 @@ import com.spring.springboot.entities.Course;
 import com.spring.springboot.entities.Exams;
 import com.spring.springboot.entities.ExamsId;
 import com.spring.springboot.entities.Student;
+import com.spring.springboot.exceptions.ExamAlreadyRegisteredException;
+import com.spring.springboot.exceptions.ObjNotFoundException;
 import com.spring.springboot.repository.CoursesRepository;
 import com.spring.springboot.repository.ExamsRepository;
 import com.spring.springboot.repository.StudentRepository;
 import com.spring.springboot.services.ExamsService;
 import com.spring.springboot.utils.MapperUtils;
+import com.spring.springboot.utils.StringUtils;
 
 
 @Service
@@ -33,49 +38,49 @@ public class ExamsServiceImplementation implements ExamsService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public ExamsDto save(ExamsDto dto) throws IllegalStateException{
+	public ExamsDto save(ExamsDto dto) throws ObjNotFoundException, ExamAlreadyRegisteredException {
 		Exams exam = persistExams(dto.getExamsId().getStudent().getId(), dto.getExamsId().getCourse().getName(), dto.getEvaluation(), true);
-		if(exam == null)
-			throw new IllegalStateException();
 		return mapper.map(exam, ExamsDto.class);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public ExamsDto update(ExamsDto dto) throws IllegalStateException{
+	public ExamsDto update(ExamsDto dto) throws ObjNotFoundException, ExamAlreadyRegisteredException{
 		Exams exam = persistExams(dto.getExamsId().getStudent().getId(), dto.getExamsId().getCourse().getName(), dto.getEvaluation(), false);
-		if(exam == null)
-			throw new IllegalStateException();
 		return mapper.map(exam, ExamsDto.class);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public ExamsDto delete(ExamsDto dto) throws IllegalStateException{
+	public ExamsDto delete(ExamsDto dto) throws ObjNotFoundException, ExamAlreadyRegisteredException{
 		Exams exam = getExams(dto.getExamsId().getStudent().getId(), dto.getExamsId().getCourse().getName(), dto.getEvaluation(), false);
 		if(exam == null)
-			throw new IllegalStateException();
+			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_EXAM, dto.getExamsId().getCourse(), dto.getExamsId().getStudent()));
 		examsRepository.delete(exam);
 		return dto;
 	}
 
-	private Exams persistExams(Integer student, String course, Integer evaluation, boolean isExisting) throws IllegalStateException{
+	private Exams persistExams(Integer student, String course, Integer evaluation, boolean isExisting) throws  ObjNotFoundException, ExamAlreadyRegisteredException{
 		Exams exam = getExams(student, course, evaluation, isExisting);
 		if(exam == null)
-			throw new IllegalStateException();
+			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_EXAM, course, student));
 		return examsRepository.save(exam);	
 	}	
 	
-	private Exams getExams(Integer student, String course, Integer evaluation, boolean isExisting) throws IllegalStateException {
-		Student studentExams = studentRepository.findById(student).get();
+	private Exams getExams(Integer student, String course, Integer evaluation, boolean isExisting) throws ObjNotFoundException, ExamAlreadyRegisteredException {
+		Optional<Student> studentExams = studentRepository.findById(student);
+		if(!studentExams.isPresent())
+			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.STUDENT, "id", student));
 		Course courseExams = coursesRepository.findByName(course);
-		ExamsId examsId = new ExamsId(studentExams, courseExams);
+		if(courseExams == null)
+			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_NAME, StringUtils.COURSE, "name", course));
+		ExamsId examsId = new ExamsId(studentExams.get(), courseExams);
 		
-		if(examsRepository.existsById(examsId)==isExisting) throw new IllegalStateException();
+		if(examsRepository.existsById(examsId)==isExisting) 
+			throw new ExamAlreadyRegisteredException(String.format(StringUtils.EXAM_ALREADY_REGISTERED, course, student));
 		
-		Exams exams = new Exams(examsId, evaluation);
+		return new Exams(examsId, evaluation);
 		
-		return exams;
 	}
 	
 }
