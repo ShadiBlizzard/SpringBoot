@@ -2,6 +2,8 @@ package com.spring.springboot.utils;
 
 public final class StringUtils {
 	
+	private StringUtils() {}
+	
 	public static final String NOT_FOUND_ID = "%s of %s %n has not been found.";
 	public static final String NOT_FOUND_NAME = "%s of %s %s has not been found.";
 	public static final String NOT_FOUND_EXAM = "Exam %s of student %n has not been found.";
