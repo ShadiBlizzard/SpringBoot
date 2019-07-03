@@ -15,5 +15,7 @@ public final class StringUtils {
 	public static final String EXAM_ALREADY_REGISTERED = "Exam %s for student %s is already registered";
 	public static final String EXAM_UNEXISTING = "Exam %s do not exists for this student, cannot upload or delete";
 	public static final String EXAM = "Exam";
+	public static final String ACCESS_DENIED = "Access Denied";
+	public static final String UNAUTHORIZED = "Not Authorized";
 
 }
