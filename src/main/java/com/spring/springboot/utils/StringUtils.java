@@ -22,5 +22,7 @@ public final class StringUtils {
 	public static final String IMAGE_ALREADY_EXISTS = "Image already exists for student %s";
 	public static final String UPDATE_SUCCESS = "%s correctly updated";
 	public static final String DELETE_SUCCESS = "%s correctly deleted";
+	public static final String HAS_ROLE_USER = "hasRole('ROLE_USER')";
+	public static final String HAS_ROLE_ADMIN = "hasRole('ROLE_ADMIN')";
 
 }
