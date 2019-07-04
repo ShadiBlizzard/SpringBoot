@@ -1,6 +1,8 @@
 package com.spring.springboot.services.implementation;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -31,9 +33,11 @@ public class StudentServiceImplementation implements StudentService {
 	@Override
 	@Transactional(readOnly = true)
 	public ApiResponse findStudentById(int id) throws ObjNotFoundException {
-		if(!studentRepository.findById(id).isPresent())
+		Optional<Student> student = studentRepository.findById(id);
+		if(student.isPresent())
+			return new ApiResponse(HttpStatus.FOUND, mapper.map(student.get(), StudentDto.class));
+		else
 			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.STUDENT, "id", id));
-		return new ApiResponse(HttpStatus.FOUND, mapper.map(studentRepository.findById(id).get(), StudentDto.class));
 	}
 
 	@Override
@@ -61,8 +65,6 @@ public class StudentServiceImplementation implements StudentService {
 			throw new InvalidOperationException(StringUtils.INVALID_UPDATE_OP);
 		Student student = mapper.map(dto, Student.class);
 		Student insert = studentRepository.save(student);
-		if (insert == null) 
-			throw new InsertionException(String.format(StringUtils.INSERTION_ERROR, StringUtils.STUDENT));
 		return new ApiResponse(HttpStatus.OK, mapper.map(insert, StudentDto.class));	
 	}
 
@@ -75,8 +77,7 @@ public class StudentServiceImplementation implements StudentService {
 		if(!studentRepository.findById(dto.getId()).isPresent())
 			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.STUDENT, "id", dto.getId()));
 		Student student = mapper.map(dto, Student.class);
-		if(studentRepository.save(student) == null)
-			throw new InsertionException(String.format(StringUtils.INSERTION_ERROR, StringUtils.STUDENT));
+		studentRepository.save(student);
 		return new ApiResponse(HttpStatus.OK, String.format(StringUtils.UPDATE_SUCCESS, student.getClass().getName()));	
 	}
 

@@ -55,16 +55,12 @@ public class ExamsServiceImplementation implements ExamsService {
 	@Transactional(readOnly = false)
 	public ExamsDto delete(ExamsDto dto) throws ObjNotFoundException, ExamAlreadyRegisteredException, UnexistingExamException{
 		Exams exam = getExams(dto.getExamsId().getStudent().getId(), dto.getExamsId().getCourse().getName(), dto.getEvaluation(), false);
-		if(exam == null)
-			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_EXAM, dto.getExamsId().getCourse(), dto.getExamsId().getStudent()));
 		examsRepository.delete(exam);
 		return dto;
 	}
 
 	private Exams persistExams(Integer student, String course, Integer evaluation, boolean isExisting) throws  ObjNotFoundException, ExamAlreadyRegisteredException, UnexistingExamException{
 		Exams exam = getExams(student, course, evaluation, isExisting);
-		if(exam == null)
-			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_EXAM, course, student));
 		return examsRepository.save(exam);	
 	}	
 	

@@ -46,9 +46,6 @@ public class ImagesServiceImplementation implements ImagesService {
 		if(image.isPresent())
 			throw new InvalidOperationException(String.format(StringUtils.IMAGE_ALREADY_EXISTS, dto.getId()));
 		Images newImage = imagesRepository.save(mapper.map(dto, Images.class));
-		if (newImage == null)
-			throw new InsertionException(String.format(StringUtils.INSERTION_ERROR, StringUtils.IMAGE));
-		
 		return new ApiResponse(HttpStatus.OK, mapper.map(newImage, ImagesDto.class));
 	}
 
@@ -66,9 +63,7 @@ public class ImagesServiceImplementation implements ImagesService {
 	public ApiResponse update(ImagesDto dto) throws ObjNotFoundException, InsertionException {
 		if(!imagesRepository.findById(dto.getId()).isPresent())
 			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.IMAGE, dto.getId()));
-		if(imagesRepository.save(mapper.map(dto, Images.class)) == null)
-			throw new InsertionException(String.format(StringUtils.INSERTION_ERROR, StringUtils.IMAGE));
-		
+		imagesRepository.save(mapper.map(dto, Images.class));
 		return new ApiResponse(HttpStatus.OK, "Image updated successfully");
 	}
 	
