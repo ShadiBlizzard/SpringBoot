@@ -8,14 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.springboot.dto.CareerDto;
 import com.spring.springboot.dto.CourseDto;
-import com.spring.springboot.dto.StudentDto;
 import com.spring.springboot.entities.Career;
 import com.spring.springboot.exceptions.EmptyListException;
 import com.spring.springboot.exceptions.ObjNotFoundException;
 import com.spring.springboot.repository.CareerRepository;
+import com.spring.springboot.repository.StudentRepository;
 import com.spring.springboot.services.CareerService;
 import com.spring.springboot.services.CourseService;
-import com.spring.springboot.services.StudentService;
 import com.spring.springboot.utils.MapperUtils;
 import com.spring.springboot.utils.StringUtils;
 
@@ -27,7 +26,7 @@ public class CareerServiceImplementation implements CareerService {
 	private CareerRepository careerRepository;
 	
 	@Autowired
-	private StudentService studentService;
+	private StudentRepository studentRepository;
 	
 	@Autowired
 	private CourseService courseService;
@@ -45,8 +44,7 @@ public class CareerServiceImplementation implements CareerService {
 
 	@Override
 	public List<CareerDto> findByStudent(CareerDto dto) throws ObjNotFoundException, EmptyListException {
-		List<StudentDto> student = studentService.findStudentsByNameAndSurname(new StudentDto(dto.getCareerId().getStudentname(), dto.getCareerId().getStudentsurname()));
-		if(student.isEmpty())
+		if(studentRepository.findByNameAndSurname(dto.getCareerId().getStudentname(), dto.getCareerId().getStudentsurname()).isEmpty())
 			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_NAME, StringUtils.STUDENT, dto.getCareerId().getStudentname() + dto.getCareerId().getStudentsurname()));
 		
 		List<Career> careers = careerRepository.findCareerByStudent(dto.getCareerId().getStudentname(), dto.getCareerId().getStudentsurname());

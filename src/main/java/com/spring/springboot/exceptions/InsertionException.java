@@ -1,13 +1,13 @@
 package com.spring.springboot.exceptions;
 
-public class ImageInsertionException extends Exception{
+public class InsertionException extends Exception{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6402165225366641561L;
 	
-	public ImageInsertionException (String msg) {
+	public InsertionException (String msg) {
 		super(msg);
 	}
 

@@ -1,6 +1,8 @@
 package com.spring.springboot.controller;
 
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.springboot.dto.ImagesDto;
 import com.spring.springboot.exceptions.ApiResponse;
-import com.spring.springboot.exceptions.ImageInsertionException;
+import com.spring.springboot.exceptions.InsertionException;
+import com.spring.springboot.exceptions.InvalidOperationException;
 import com.spring.springboot.exceptions.ObjNotFoundException;
 import com.spring.springboot.services.ImagesService;
 
@@ -29,7 +32,7 @@ public class ImagesController {
 
 	
 	@PostMapping("/")
-	public ResponseEntity<ApiResponse> insert(@RequestBody ImagesDto dto) throws ImageInsertionException {
+	public ResponseEntity<ApiResponse> insert(@Valid @RequestBody ImagesDto dto) throws InsertionException, InvalidOperationException {
 		ApiResponse image = imagesService.save(dto);
 		return new ResponseEntity<>(image, image.getStatus());
 	}
@@ -47,7 +50,7 @@ public class ImagesController {
 	}
 	
 	@PutMapping(value="/{id}")
-	public ResponseEntity<ApiResponse> updateImage(@RequestBody ImagesDto dto, @PathVariable Integer id) throws ObjNotFoundException, ImageInsertionException {
+	public ResponseEntity<ApiResponse> updateImage(@Valid @RequestBody ImagesDto dto, @PathVariable Integer id) throws ObjNotFoundException, InsertionException {
 		dto.setId(id);
 		ApiResponse image = imagesService.update(dto);
 		return new ResponseEntity<>(image, image.getStatus());

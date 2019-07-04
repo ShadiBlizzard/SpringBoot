@@ -1,6 +1,5 @@
 package com.spring.springboot.controller;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,10 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.springboot.dto.StudentDto;
+import com.spring.springboot.exceptions.ApiResponse;
 import com.spring.springboot.exceptions.EmptyListException;
+import com.spring.springboot.exceptions.InsertionException;
 import com.spring.springboot.exceptions.InvalidOperationException;
 import com.spring.springboot.exceptions.ObjNotFoundException;
 import com.spring.springboot.services.StudentService;
@@ -32,39 +34,41 @@ public class StudentController {
 	private StudentService studentService;
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<StudentDto> findStudentById(@PathVariable("id") int id) throws ObjNotFoundException {
-		StudentDto dto = studentService.findStudentById(id);
-		return new ResponseEntity<>(dto, HttpStatus.FOUND);
+	public ResponseEntity<ApiResponse> findStudentById(@PathVariable("id") int id) throws ObjNotFoundException {
+		ApiResponse dto = studentService.findStudentById(id);
+		return new ResponseEntity<>(dto, dto.getStatus());
 	}
 	
 	@GetMapping("/all")
-	public ResponseEntity<List<StudentDto>> findAll() throws EmptyListException {
-		List<StudentDto> listDto= studentService.findAll();
-		return new ResponseEntity<>(listDto, HttpStatus.FOUND);
+	public ResponseEntity<ApiResponse> findAll() throws EmptyListException {
+		ApiResponse listDto= studentService.findAll();
+		return new ResponseEntity<>(listDto, listDto.getStatus());
 	}
 	
-	@PostMapping("/byname")
-	public ResponseEntity<List<StudentDto>> findStudentByNameAndSurname(@RequestBody StudentDto dto) throws ObjNotFoundException {
-		List<StudentDto> responseDto = studentService.findStudentsByNameAndSurname(dto);
-		return new ResponseEntity<>(responseDto, HttpStatus.FOUND);
+	@GetMapping("/byname")
+	public ResponseEntity<ApiResponse> findStudentByNameAndSurname(@RequestParam String name, @RequestParam String surname) throws ObjNotFoundException {
+		ApiResponse responseDto = studentService.findStudentsByNameAndSurname(new StudentDto(name, surname));
+		return new ResponseEntity<>(responseDto, responseDto.getStatus());
 	}
 	
 	@PostMapping("/new")
-	public ResponseEntity<StudentDto> insertNewStudent(@RequestBody StudentDto dto) throws InvalidOperationException {
-		StudentDto responseDto = studentService.save(dto);
-		return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+	public ResponseEntity<ApiResponse> insertNewStudent(@RequestBody StudentDto dto) throws InvalidOperationException, InsertionException {
+		ApiResponse responseDto = studentService.save(dto);
+		return new ResponseEntity<>(responseDto, responseDto.getStatus());
 	}
 	
-	@PutMapping("/update")
-	public ResponseEntity<StudentDto> updateStudent(@RequestBody StudentDto dto) throws ObjNotFoundException, InvalidOperationException {
-		StudentDto responseDto = studentService.update(dto);
+	@PutMapping("/update/{id}")
+	public ResponseEntity<ApiResponse> updateStudent(@RequestBody StudentDto dto, @PathVariable Integer id) throws ObjNotFoundException, InvalidOperationException, InsertionException {
+		dto.setId(id);
+		ApiResponse responseDto = studentService.update(dto);
 		return new ResponseEntity<>(responseDto, HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/delete")
-	public ResponseEntity<StudentDto> deleteStudent(@RequestBody StudentDto dto) throws ObjNotFoundException {
-		StudentDto responseDto = studentService.delete(dto);
-		return new ResponseEntity<>(responseDto, HttpStatus.OK);
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<ApiResponse> deleteStudent(@RequestBody StudentDto dto, @PathVariable Integer id) throws ObjNotFoundException {
+		dto.setId(id);
+		ApiResponse responseDto = studentService.delete(dto);
+		return new ResponseEntity<>(responseDto, responseDto.getStatus());
 	}
 
 }

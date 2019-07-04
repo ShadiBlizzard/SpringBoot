@@ -18,6 +18,9 @@ public final class StringUtils {
 	public static final String ACCESS_DENIED = "Access Denied";
 	public static final String UNAUTHORIZED = "Not Authorized";
 	public static final String IMAGE = "Image";
-	public static final String IMAGE_INSERTION_ERROR = "Some errors occured during the image insertion/update";
+	public static final String INSERTION_ERROR = "Some errors occured during the %s insertion/update";
+	public static final String IMAGE_ALREADY_EXISTS = "Image already exists for student %s";
+	public static final String UPDATE_SUCCESS = "%s correctly updated";
+	public static final String DELETE_SUCCESS = "%s correctly deleted";
 
 }

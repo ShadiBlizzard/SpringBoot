@@ -2,12 +2,15 @@ package com.spring.springboot.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
+
 public class ImagesDto implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	
 	private Integer id;
 	
+	@NotEmpty
 	private byte[] value;
 
 	public ImagesDto() {}
