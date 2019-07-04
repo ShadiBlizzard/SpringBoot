@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.spring.springboot.exceptions.ApiError;
+import com.spring.springboot.exceptions.ApiResponse;
 import com.spring.springboot.exceptions.EmptyListException;
 import com.spring.springboot.exceptions.ExamAlreadyRegisteredException;
+import com.spring.springboot.exceptions.ImageInsertionException;
 import com.spring.springboot.exceptions.InvalidOperationException;
 import com.spring.springboot.exceptions.ObjNotFoundException;
 import com.spring.springboot.exceptions.UnexistingExamException;
@@ -28,16 +29,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		String errorString = "Malformed JSON request";
 		logger.info(ex.getMessage(), ex);
 		
-		return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, errorString));
+		return buildResponseEntity(new ApiResponse(HttpStatus.BAD_REQUEST, errorString));
 	}
 	
-	private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
+	private ResponseEntity<Object> buildResponseEntity(ApiResponse apiError) {
 		return new ResponseEntity<>(apiError, apiError.getStatus());
 	}
 	
 	@ExceptionHandler(ObjNotFoundException.class)
 	private ResponseEntity<Object> handleEntityNotFound(ObjNotFoundException ex) {
-		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
+		ApiResponse apiError = new ApiResponse(HttpStatus.NOT_FOUND);
 		apiError.setMsg(ex.getMessage());
 		logger.info(ex.getMessage(), ex);
 		return buildResponseEntity(apiError);
@@ -45,15 +46,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler(EmptyListException.class)
 	private ResponseEntity<Object> handleEmptyList(EmptyListException ex) {
-		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
+		ApiResponse apiError = new ApiResponse(HttpStatus.NOT_FOUND);
 		apiError.setMsg(ex.getMessage());
 		logger.info(ex.getMessage(), ex);
 		return buildResponseEntity(apiError);
 	}
 	
-	@ExceptionHandler({ExamAlreadyRegisteredException.class, UnexistingExamException.class, InvalidOperationException.class})
+	@ExceptionHandler({ExamAlreadyRegisteredException.class, UnexistingExamException.class, InvalidOperationException.class, ImageInsertionException.class})
 	private ResponseEntity<Object> handleExamAlreadyRegistered(ExamAlreadyRegisteredException ex) {
-		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+		ApiResponse apiError = new ApiResponse(HttpStatus.BAD_REQUEST);
 		apiError.setMsg(ex.getMessage());
 		logger.info(ex.getMessage(), ex);
 		return buildResponseEntity(apiError);

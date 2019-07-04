@@ -6,23 +6,23 @@ import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class ApiError {
+public class ApiResponse {
 	
 	private HttpStatus status;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
 	private LocalDateTime timestamp;
 	private String msg;
 	
-	private ApiError() {
+	private ApiResponse() {
 		timestamp = LocalDateTime.now();
 	}
 	
-	public ApiError(HttpStatus status) {
+	public ApiResponse(HttpStatus status) {
 		this();
 		this.status = status;
 	}
 	
-	public ApiError(HttpStatus status, String message) {
+	public ApiResponse(HttpStatus status, String message) {
 		this();
 		this.status = status;
 		this.msg = message;
