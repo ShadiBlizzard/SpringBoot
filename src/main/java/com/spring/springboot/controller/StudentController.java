@@ -2,7 +2,6 @@ package com.spring.springboot.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spring.springboot.dto.StudentDto;
 import com.spring.springboot.exceptions.ApiResponse;
 import com.spring.springboot.exceptions.EmptyListException;
-import com.spring.springboot.exceptions.InsertionException;
 import com.spring.springboot.exceptions.InvalidOperationException;
 import com.spring.springboot.exceptions.ObjNotFoundException;
 import com.spring.springboot.services.StudentService;
@@ -52,16 +50,16 @@ public class StudentController {
 	}
 	
 	@PostMapping("/new")
-	public ResponseEntity<ApiResponse> insertNewStudent(@RequestBody StudentDto dto) throws InvalidOperationException, InsertionException {
+	public ResponseEntity<ApiResponse> insertNewStudent(@RequestBody StudentDto dto) throws InvalidOperationException {
 		ApiResponse responseDto = studentService.save(dto);
 		return new ResponseEntity<>(responseDto, responseDto.getStatus());
 	}
 	
 	@PutMapping("/update/{id}")
-	public ResponseEntity<ApiResponse> updateStudent(@RequestBody StudentDto dto, @PathVariable Integer id) throws ObjNotFoundException, InvalidOperationException, InsertionException {
+	public ResponseEntity<ApiResponse> updateStudent(@RequestBody StudentDto dto, @PathVariable Integer id) throws ObjNotFoundException, InvalidOperationException {
 		dto.setId(id);
 		ApiResponse responseDto = studentService.update(dto);
-		return new ResponseEntity<>(responseDto, HttpStatus.OK);
+		return new ResponseEntity<>(responseDto, responseDto.getStatus());
 	}
 	
 	@DeleteMapping("/delete/{id}")

@@ -1,6 +1,5 @@
 package com.spring.springboot.controller;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.springboot.dto.CourseDto;
+import com.spring.springboot.exceptions.ApiResponse;
 import com.spring.springboot.exceptions.EmptyListException;
 import com.spring.springboot.exceptions.InvalidOperationException;
 import com.spring.springboot.exceptions.ObjNotFoundException;
@@ -31,21 +31,21 @@ public class CourseController {
 	private CourseService courseService;
 	
 	@GetMapping("/name/{name}")
-	public ResponseEntity<CourseDto> findByName(@PathVariable String name) throws ObjNotFoundException {
-		CourseDto courseDto = courseService.findByName(name);
-		return new ResponseEntity<>(courseDto, HttpStatus.FOUND);
+	public ResponseEntity<ApiResponse> findByName(@PathVariable String name) throws ObjNotFoundException {
+		ApiResponse courseDto = courseService.findByName(name);
+		return new ResponseEntity<>(courseDto, courseDto.getStatus());
 	}
 	
 	@GetMapping("/id/{id}")
-	public ResponseEntity<CourseDto> findDescriptionFromName(@PathVariable Integer id) throws ObjNotFoundException {
-		CourseDto courseDto = courseService.findById(id);
-		return new ResponseEntity<>(courseDto, HttpStatus.FOUND);
+	public ResponseEntity<ApiResponse> findDescriptionFromName(@PathVariable Integer id) throws ObjNotFoundException {
+		ApiResponse courseDto = courseService.findById(id);
+		return new ResponseEntity<>(courseDto, courseDto.getStatus());
 	}
 	
 	@GetMapping("/all")
-	public ResponseEntity<List<CourseDto>> findAll() throws EmptyListException {
-		List<CourseDto> listDto =  courseService.findAll();
-		return new ResponseEntity<>(listDto, HttpStatus.FOUND);
+	public ResponseEntity<ApiResponse> findAll() throws EmptyListException {
+		ApiResponse listDto =  courseService.findAll();
+		return new ResponseEntity<>(listDto, listDto.getStatus());
 	}
 	
 	@PostMapping("/new")

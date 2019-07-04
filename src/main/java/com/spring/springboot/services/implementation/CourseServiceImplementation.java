@@ -5,11 +5,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.springboot.dto.CourseDto;
 import com.spring.springboot.entities.Course;
+import com.spring.springboot.exceptions.ApiResponse;
 import com.spring.springboot.exceptions.EmptyListException;
 import com.spring.springboot.exceptions.InvalidOperationException;
 import com.spring.springboot.exceptions.ObjNotFoundException;
@@ -32,29 +34,29 @@ public class CourseServiceImplementation implements CourseService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public CourseDto findById(Integer id) throws ObjNotFoundException {
+	public ApiResponse findById(Integer id) throws ObjNotFoundException {
 		if(!coursesRepository.findById(id).isPresent()) 
 			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.COURSE, "id", id));
-		return mapper.map(coursesRepository.findById(id).get(), CourseDto.class);
+		return new ApiResponse(HttpStatus.OK, mapper.map(coursesRepository.findById(id).get(), CourseDto.class));
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
-	public CourseDto findByName(String name) throws ObjNotFoundException {
+	public ApiResponse findByName(String name) throws ObjNotFoundException {
 		Course course = coursesRepository.findByName(name);
 		if(course == null)
 			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_NAME, StringUtils.COURSE, "name", name));
-		return mapper.map(course, CourseDto.class);
+		return new ApiResponse(HttpStatus.FOUND, mapper.map(course, CourseDto.class));
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<CourseDto> findAll() throws EmptyListException {
+	public ApiResponse findAll() throws EmptyListException {
 		List<Course> courses = coursesRepository.findAll();
 		if (courses.isEmpty())
 			throw new EmptyListException(String.format(StringUtils.EMPTY_LIST, StringUtils.COURSE + "s"));
 		logger.debug(courses.size() + " courses founded.");
-		return mapper.mapAll(courses, CourseDto.class);
+		return new ApiResponse(HttpStatus.FOUND, mapper.mapAll(courses, CourseDto.class));
 	}
 	
 	@Override

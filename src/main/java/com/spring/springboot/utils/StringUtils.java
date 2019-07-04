@@ -22,5 +22,6 @@ public final class StringUtils {
 	public static final String IMAGE_ALREADY_EXISTS = "Image already exists for student %s";
 	public static final String UPDATE_SUCCESS = "%s correctly updated";
 	public static final String DELETE_SUCCESS = "%s correctly deleted";
+	public static final String MALFORMED_JSON_REQUEST = "Malformed json request";
 
 }

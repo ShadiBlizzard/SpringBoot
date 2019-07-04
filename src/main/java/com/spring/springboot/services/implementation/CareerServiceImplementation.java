@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.springboot.dto.CareerDto;
-import com.spring.springboot.dto.CourseDto;
 import com.spring.springboot.entities.Career;
+import com.spring.springboot.entities.Course;
 import com.spring.springboot.exceptions.EmptyListException;
 import com.spring.springboot.exceptions.ObjNotFoundException;
 import com.spring.springboot.repository.CareerRepository;
+import com.spring.springboot.repository.CoursesRepository;
 import com.spring.springboot.repository.StudentRepository;
 import com.spring.springboot.services.CareerService;
-import com.spring.springboot.services.CourseService;
 import com.spring.springboot.utils.MapperUtils;
 import com.spring.springboot.utils.StringUtils;
 
@@ -29,7 +29,7 @@ public class CareerServiceImplementation implements CareerService {
 	private StudentRepository studentRepository;
 	
 	@Autowired
-	private CourseService courseService;
+	private CoursesRepository coursesRepository;
 	
 	@Autowired
 	private MapperUtils mapper;
@@ -55,7 +55,7 @@ public class CareerServiceImplementation implements CareerService {
 
 	@Override
 	public List<CareerDto> findByCourse(CareerDto dto) throws ObjNotFoundException, EmptyListException {
-		CourseDto course = courseService.findByName(dto.getCareerId().getCoursename());
+		Course course = coursesRepository.findByName(dto.getCareerId().getCoursename());
 		if(course == null)
 			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_NAME, dto.getCareerId().getCoursename()));
 		List<Career> careers = careerRepository.findCareerByCourse(dto.getCareerId().getCoursename());
@@ -66,7 +66,7 @@ public class CareerServiceImplementation implements CareerService {
 
 	@Override
 	public List<CareerDto> findByCourseAndEvaluation(CareerDto dto) throws ObjNotFoundException {
-		CourseDto course = courseService.findByName(dto.getCareerId().getCoursename());
+		Course course = coursesRepository.findByName(dto.getCareerId().getCoursename());
 		if(course == null)
 			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_NAME, dto.getCareerId().getCoursename()));
 		List<Career> careers = careerRepository.findCareerByCourseAndEvaluation(dto.getCareerId().getCoursename(), dto.getCareerId().getEvaluation());

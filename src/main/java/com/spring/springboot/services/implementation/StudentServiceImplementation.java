@@ -10,7 +10,6 @@ import com.spring.springboot.dto.StudentDto;
 import com.spring.springboot.entities.Student;
 import com.spring.springboot.exceptions.ApiResponse;
 import com.spring.springboot.exceptions.EmptyListException;
-import com.spring.springboot.exceptions.InsertionException;
 import com.spring.springboot.exceptions.InvalidOperationException;
 import com.spring.springboot.exceptions.ObjNotFoundException;
 import com.spring.springboot.repository.StudentRepository;
@@ -56,18 +55,16 @@ public class StudentServiceImplementation implements StudentService {
 	}
 
 	@Override
-	public ApiResponse save(StudentDto dto) throws InvalidOperationException, InsertionException {
+	public ApiResponse save(StudentDto dto) throws InvalidOperationException {
 		if(dto.getId() != null)
 			throw new InvalidOperationException(StringUtils.INVALID_UPDATE_OP);
 		Student student = mapper.map(dto, Student.class);
 		Student insert = studentRepository.save(student);
-		if (insert == null) 
-			throw new InsertionException(String.format(StringUtils.INSERTION_ERROR, StringUtils.STUDENT));
 		return new ApiResponse(HttpStatus.OK, mapper.map(insert, StudentDto.class));	
 	}
 
 	@Override
-	public ApiResponse update(StudentDto dto) throws ObjNotFoundException, InvalidOperationException, InsertionException {
+	public ApiResponse update(StudentDto dto) throws ObjNotFoundException, InvalidOperationException {
 		//controllo che ci sia un id da cercare
 		if(dto.getId() == null)
 			throw new InvalidOperationException(StringUtils.INVALID_INSERT_OP);
@@ -75,8 +72,6 @@ public class StudentServiceImplementation implements StudentService {
 		if(!studentRepository.findById(dto.getId()).isPresent())
 			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.STUDENT, "id", dto.getId()));
 		Student student = mapper.map(dto, Student.class);
-		if(studentRepository.save(student) == null)
-			throw new InsertionException(String.format(StringUtils.INSERTION_ERROR, StringUtils.STUDENT));
 		return new ApiResponse(HttpStatus.OK, String.format(StringUtils.UPDATE_SUCCESS, student.getClass().getName()));	
 	}
 
