@@ -4,7 +4,7 @@ public final class StringUtils {
 	
 	private StringUtils() {}
 	
-	public static final String NOT_FOUND_ID = "%s of %s %n has not been found.";
+	public static final String NOT_FOUND_ID = "%s of %s %s has not been found.";
 	public static final String NOT_FOUND_NAME = "%s of %s %s has not been found.";
 	public static final String NOT_FOUND_EXAM = "Exam %s of student %n has not been found.";
 	public static final String STUDENT = "Student";
@@ -18,6 +18,6 @@ public final class StringUtils {
 	public static final String ACCESS_DENIED = "Access Denied";
 	public static final String UNAUTHORIZED = "Not Authorized";
 	public static final String IMAGE = "Image";
-	public static final String IMAGE_INSERTION_ERROR = "Some errors occured during the image insertion";
+	public static final String IMAGE_INSERTION_ERROR = "Some errors occured during the image insertion/update";
 
 }
