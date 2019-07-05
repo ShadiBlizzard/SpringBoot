@@ -13,6 +13,6 @@ public interface StudentService {
 	public ApiResponse findStudentsByNameAndSurname(StudentDto dto) throws ObjNotFoundException;
 	public ApiResponse save(StudentDto dto) throws InvalidOperationException;
 	public ApiResponse update(StudentDto dto) throws ObjNotFoundException, InvalidOperationException;
-	public ApiResponse delete(StudentDto dto) throws ObjNotFoundException;
+	public ApiResponse delete(Integer dto) throws ObjNotFoundException;
 
 }

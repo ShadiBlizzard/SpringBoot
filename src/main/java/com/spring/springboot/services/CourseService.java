@@ -13,8 +13,8 @@ public interface CourseService {
 	public ApiResponse findById(Integer id) throws ObjNotFoundException;
 	public ApiResponse findByName(String name) throws ObjNotFoundException;
 	public ApiResponse findAll() throws EmptyListException;
-	public CourseDto save(CourseDto dto) throws InvalidOperationException;
-	public CourseDto update(CourseDto dto) throws InvalidOperationException, ObjNotFoundException;
-	public CourseDto delete(CourseDto dto) throws ObjNotFoundException;
+	public ApiResponse save(CourseDto dto) throws InvalidOperationException;
+	public ApiResponse update(CourseDto dto) throws InvalidOperationException, ObjNotFoundException;
+	public ApiResponse delete(Integer dto) throws ObjNotFoundException;
 	
 }

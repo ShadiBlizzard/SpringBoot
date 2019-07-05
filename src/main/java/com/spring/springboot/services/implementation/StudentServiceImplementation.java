@@ -77,16 +77,17 @@ public class StudentServiceImplementation implements StudentService {
 			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.STUDENT, "id", dto.getId()));
 		Student student = mapper.map(dto, Student.class);
 		studentRepository.save(student);
-		return new ApiResponse(HttpStatus.OK, String.format(StringUtils.UPDATE_SUCCESS, student.getClass().getName()));	
+		return new ApiResponse(HttpStatus.OK, String.format(StringUtils.UPDATE_SUCCESS, student.getClass().getSimpleName()));	
 	}
 
 	@Override
-	public ApiResponse delete(StudentDto dto) throws ObjNotFoundException {
-		if(!studentRepository.findById(dto.getId()).isPresent())
-			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.STUDENT, "id", dto.getId()));
-		Student student = mapper.map(dto, Student.class);
+	public ApiResponse delete(Integer id) throws ObjNotFoundException {
+		Optional<Student> studentDto= studentRepository.findById(id);
+		if(!studentDto.isPresent())
+			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.STUDENT, "id",id));
+		Student student = mapper.map(studentDto.get(), Student.class);
 		studentRepository.delete(student);
-		return new ApiResponse(HttpStatus.OK, String.format(StringUtils.DELETE_SUCCESS, StringUtils.DELETE_SUCCESS));
+		return new ApiResponse(HttpStatus.OK, String.format(StringUtils.DELETE_SUCCESS, student.getClass().getSimpleName()));
 	}
 
 }

@@ -2,7 +2,6 @@ package com.spring.springboot.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,7 +35,7 @@ public class CourseController {
 		return new ResponseEntity<>(courseDto, courseDto.getStatus());
 	}
 	
-	@GetMapping("/id/{id}")
+	@GetMapping("/description/{id}")
 	public ResponseEntity<ApiResponse> findDescriptionFromName(@PathVariable Integer id) throws ObjNotFoundException {
 		ApiResponse courseDto = courseService.findById(id);
 		return new ResponseEntity<>(courseDto, courseDto.getStatus());
@@ -49,22 +48,23 @@ public class CourseController {
 	}
 	
 	@PostMapping("/new")
-	public ResponseEntity<CourseDto> saveNewCourse(@RequestBody CourseDto dto) throws InvalidOperationException {
-		CourseDto courseDto = courseService.save(dto);
-		return new ResponseEntity<>(courseDto, HttpStatus.CREATED);
+	public ResponseEntity<ApiResponse> saveNewCourse(@RequestBody CourseDto dto) throws InvalidOperationException {
+		ApiResponse courseDto = courseService.save(dto);
+		return new ResponseEntity<>(courseDto, courseDto.getStatus());
 	}
 	
-	@PutMapping("/update")
-	public ResponseEntity<CourseDto> updateCourseDescription(@RequestBody CourseDto dto) throws InvalidOperationException, ObjNotFoundException {
-		CourseDto courseDto = courseService.update(dto);
-		return new ResponseEntity<>(courseDto, HttpStatus.OK);
+	@PutMapping("/update/{id}")
+	public ResponseEntity<ApiResponse> updateCourseDescription(@RequestBody CourseDto dto, @PathVariable Integer id) throws InvalidOperationException, ObjNotFoundException {
+		dto.setId(id);
+		ApiResponse courseDto = courseService.update(dto);
+		return new ResponseEntity<>(courseDto, courseDto.getStatus());
 	}
 	
-	@DeleteMapping("/delete")
-	public ResponseEntity<CourseDto> delete(@RequestBody CourseDto dto) throws ObjNotFoundException {
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<ApiResponse> delete(@PathVariable Integer id) throws ObjNotFoundException {
 
-		CourseDto courseDto = courseService.delete(dto);
-		return new ResponseEntity<>(courseDto, HttpStatus.OK);
+		ApiResponse courseDto = courseService.delete(id);
+		return new ResponseEntity<>(courseDto, courseDto.getStatus());
 	}
 
 	

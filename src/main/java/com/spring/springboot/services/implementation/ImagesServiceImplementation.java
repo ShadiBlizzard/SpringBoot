@@ -55,15 +55,16 @@ public class ImagesServiceImplementation implements ImagesService {
 			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.IMAGE, id));
 		Images images = opt.get();
 		imagesRepository.delete(images);
-		return new ApiResponse(HttpStatus.OK, "Image deleted successfully");
+		return new ApiResponse(HttpStatus.OK, String.format(StringUtils.DELETE_SUCCESS, StringUtils.IMAGE));
 	}
 
 	@Override
 	public ApiResponse update(ImagesDto dto) throws ObjNotFoundException {
-		if(!imagesRepository.findById(dto.getId()).isPresent())
+		Optional<Images> opt = imagesRepository.findById(dto.getId());
+		if(!opt.isPresent())
 			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.IMAGE, dto.getId()));
 		imagesRepository.save(mapper.map(dto, Images.class));
-		return new ApiResponse(HttpStatus.OK, "Image updated successfully");
+		return new ApiResponse(HttpStatus.OK, String.format(StringUtils.UPDATE_SUCCESS, StringUtils.IMAGE));
 	}
 	
 }

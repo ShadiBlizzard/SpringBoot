@@ -1,6 +1,7 @@
 package com.spring.springboot.services.implementation;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -58,16 +59,16 @@ public class CourseServiceImplementation implements CourseService {
 	}
 	
 	@Override
-	public CourseDto save(CourseDto dto) throws InvalidOperationException {
+	public ApiResponse save(CourseDto dto) throws InvalidOperationException {
 		if(dto.getId()!=null)
 			throw new InvalidOperationException(StringUtils.INVALID_UPDATE_OP);
 		Course course = mapper.map(dto, Course.class);
 		Course insert = coursesRepository.save(course);
-		return mapper.map(insert, CourseDto.class);
+		return new ApiResponse(HttpStatus.OK, mapper.map(insert, CourseDto.class));
 	}
 
 	@Override
-	public CourseDto update(CourseDto dto) throws InvalidOperationException, ObjNotFoundException {
+	public ApiResponse update(CourseDto dto) throws InvalidOperationException, ObjNotFoundException {
 		//controllo che ci sia un id da cercare
 		if(dto.getId() == null)
 			throw new InvalidOperationException(StringUtils.INVALID_INSERT_OP);
@@ -75,17 +76,18 @@ public class CourseServiceImplementation implements CourseService {
 		if(!coursesRepository.findById(dto.getId()).isPresent())
 			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.COURSE, "id", dto.getId()));
 		Course course = mapper.map(dto, Course.class);
-		Course update = coursesRepository.save(course);
-		return mapper.map(update, CourseDto.class);
+		coursesRepository.save(course);
+		return new ApiResponse(HttpStatus.OK, String.format(StringUtils.UPDATE_SUCCESS, course.getClass().getSimpleName()));
 	}
 
 	@Override
-	public CourseDto delete(CourseDto dto) throws ObjNotFoundException {
-		if(!coursesRepository.findById(dto.getId()).isPresent())
-			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.COURSE, "id", dto.getId()));
-		Course course = mapper.map(dto, Course.class);
-		coursesRepository.delete(course);
-		return dto;
+	public ApiResponse delete(Integer dto) throws ObjNotFoundException {
+		Optional<Course> course = coursesRepository.findById(dto);
+		if(!course.isPresent())
+			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.COURSE, "id", dto));
+		Course courseDto = mapper.map(course.get(), Course.class);
+		coursesRepository.delete(courseDto);
+		return new ApiResponse(HttpStatus.OK, String.format(StringUtils.DELETE_SUCCESS, course.getClass().getSimpleName()));
 	}
 
 }

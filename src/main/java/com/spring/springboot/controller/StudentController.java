@@ -63,9 +63,8 @@ public class StudentController {
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<ApiResponse> deleteStudent(@RequestBody StudentDto dto, @PathVariable Integer id) throws ObjNotFoundException {
-		dto.setId(id);
-		ApiResponse responseDto = studentService.delete(dto);
+	public ResponseEntity<ApiResponse> deleteStudent(@PathVariable Integer id) throws ObjNotFoundException {
+		ApiResponse responseDto = studentService.delete(id);
 		return new ResponseEntity<>(responseDto, responseDto.getStatus());
 	}
 
