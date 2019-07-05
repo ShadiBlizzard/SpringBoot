@@ -2,8 +2,6 @@ package com.spring.springboot.services.implementation;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,9 +21,7 @@ import com.spring.springboot.utils.StringUtils;
 @Service
 @Transactional(readOnly = false)
 public class CourseServiceImplementation implements CourseService {
-	
-	private static final Logger logger = LoggerFactory.getLogger(CourseServiceImplementation.class);
-	
+		
 	@Autowired
 	private CoursesRepository coursesRepository;
 	
@@ -36,8 +32,10 @@ public class CourseServiceImplementation implements CourseService {
 	@Transactional(readOnly = true)
 	public ApiResponse findById(Integer id) throws ObjNotFoundException {
 		if(!coursesRepository.findById(id).isPresent()) 
+
 			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.COURSE, "id", id));
 		return new ApiResponse(HttpStatus.OK, mapper.map(coursesRepository.findById(id).get(), CourseDto.class));
+
 	}
 	
 	@Override
@@ -55,8 +53,8 @@ public class CourseServiceImplementation implements CourseService {
 		List<Course> courses = coursesRepository.findAll();
 		if (courses.isEmpty())
 			throw new EmptyListException(String.format(StringUtils.EMPTY_LIST, StringUtils.COURSE + "s"));
-		logger.debug(courses.size() + " courses founded.");
 		return new ApiResponse(HttpStatus.FOUND, mapper.mapAll(courses, CourseDto.class));
+
 	}
 	
 	@Override
