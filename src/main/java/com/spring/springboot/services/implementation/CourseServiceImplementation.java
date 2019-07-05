@@ -32,10 +32,11 @@ public class CourseServiceImplementation implements CourseService {
 	@Override
 	@Transactional(readOnly = true)
 	public ApiResponse findById(Integer id) throws ObjNotFoundException {
-		if(!coursesRepository.findById(id).isPresent()) 
-
+		Optional<Course> course = coursesRepository.findById(id);
+		if(course.isPresent()) 
+			return new ApiResponse(HttpStatus.OK, mapper.map(course.get(), CourseDto.class));
+		else 
 			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.COURSE, "id", id));
-		return new ApiResponse(HttpStatus.OK, mapper.map(coursesRepository.findById(id).get(), CourseDto.class));
 
 	}
 	
