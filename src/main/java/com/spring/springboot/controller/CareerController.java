@@ -1,18 +1,17 @@
 package com.spring.springboot.controller;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.springboot.dto.CareerDto;
+import com.spring.springboot.exceptions.ApiResponse;
 import com.spring.springboot.exceptions.EmptyListException;
 import com.spring.springboot.exceptions.ObjNotFoundException;
 import com.spring.springboot.services.CareerService;
@@ -26,27 +25,28 @@ public class CareerController {
 	private CareerService careerService;
 	
 	@GetMapping("/all")
-	public ResponseEntity<List<CareerDto>> all() throws EmptyListException{
-		List<CareerDto> careers = careerService.findAll();
-		return new ResponseEntity<>(careers, HttpStatus.FOUND);
+	public ResponseEntity<ApiResponse> all() throws EmptyListException{
+		ApiResponse careers = careerService.findAll();
+		return new ResponseEntity<>(careers, careers.getStatus());
 	}
 	
-	@PostMapping("/bystudent")
-	public ResponseEntity<List<CareerDto>> byStudent(@RequestBody CareerDto dto) throws ObjNotFoundException, EmptyListException{
-		List<CareerDto> careers = careerService.findByStudent(dto);
-		return new ResponseEntity<>(careers, HttpStatus.FOUND);
+	@GetMapping("/bystudent/{id}")
+	public ResponseEntity<ApiResponse> byStudent(@PathVariable Integer id) throws ObjNotFoundException, EmptyListException{
+		
+		ApiResponse careers = careerService.findByStudent(id);
+		return new ResponseEntity<>(careers, careers.getStatus());
 	}
 	
-	@PostMapping("/bycourse")
-	public ResponseEntity<List<CareerDto>> byCourse(@RequestBody CareerDto dto) throws ObjNotFoundException, EmptyListException{
-		List<CareerDto> careers = careerService.findByCourse(dto);
-		return new ResponseEntity<>(careers, HttpStatus.FOUND);
+	@GetMapping("/bycourse/{name}")
+	public ResponseEntity<ApiResponse> byCourse(@PathVariable String name) throws ObjNotFoundException, EmptyListException{
+		ApiResponse careers = careerService.findByCourse(name);
+		return new ResponseEntity<>(careers, careers.getStatus());
 	}
 	
-	@PostMapping("/bycoursewithevaluation")
-	public ResponseEntity<List<CareerDto>> byCourseAndEvaluation(@RequestBody CareerDto dto) throws ObjNotFoundException{
-		List<CareerDto> careers = careerService.findByCourseAndEvaluation(dto);
-		return new ResponseEntity<>(careers, HttpStatus.FOUND);
+	@GetMapping("/bycoursewithevaluation")
+	public ResponseEntity<ApiResponse> byCourseAndEvaluation(@RequestParam String name, @RequestParam Integer evaluation) throws ObjNotFoundException{
+		ApiResponse careers = careerService.findByCourseAndEvaluation(name, evaluation);
+		return new ResponseEntity<>(careers, careers.getStatus());
 	}
 
 }

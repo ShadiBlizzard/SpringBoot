@@ -19,5 +19,5 @@ public interface CareerRepository extends JpaRepository<Career, CareerId>{
 	public List<Career> findCareerByCourse(@Param("course") String course);
 
 	@Query (value = "SELECT * FROM CAREER WHERE coursename = :course AND evaluation = :evaluation ", nativeQuery = true)
-	public List<Career> findCareerByCourseAndEvaluation(@Param("course") String course, @Param("evaluation")String evaluation);
+	public List<Career> findCareerByCourseAndEvaluation(@Param("course") String course, @Param("evaluation")Integer evaluation);
 }
