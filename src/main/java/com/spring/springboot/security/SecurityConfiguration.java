@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import com.spring.springboot.utils.StringUtils;
 
 @Configuration
-@Profile("secure")
+@Profile("!secure")
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
