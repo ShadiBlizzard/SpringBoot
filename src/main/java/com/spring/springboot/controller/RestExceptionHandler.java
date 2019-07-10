@@ -4,6 +4,7 @@ import org.springframework.beans.TypeMismatchException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -103,7 +104,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return buildResponseEntity(apiError);
 	}
 	
+	@ExceptionHandler(PropertyReferenceException.class)
+	private ResponseEntity<Object> handlePropertyReference(PropertyReferenceException ex) {
+		ApiResponse apiError = new ApiResponse(HttpStatus.UNPROCESSABLE_ENTITY);
+		apiError.setMsg(ex.getMessage());
+		logger.info(ex.getMessage(), ex);
+		return buildResponseEntity(apiError);
+	}
 	
-	
-
 }

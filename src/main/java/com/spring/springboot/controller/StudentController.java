@@ -2,6 +2,7 @@ package com.spring.springboot.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,14 +39,14 @@ public class StudentController {
 	}
 	
 	@GetMapping("/all")
-	public ResponseEntity<ApiResponse> findAll() throws EmptyListException {
-		ApiResponse listDto= studentService.findAll();
+	public ResponseEntity<ApiResponse> findAll(Pageable pageable) throws EmptyListException {
+		ApiResponse listDto= studentService.findAll(pageable);
 		return new ResponseEntity<>(listDto, listDto.getStatus());
 	}
 	
 	@GetMapping("/byname")
-	public ResponseEntity<ApiResponse> findStudentByNameAndSurname(@RequestParam String name, @RequestParam String surname) throws ObjNotFoundException {
-		ApiResponse responseDto = studentService.findStudentsByNameAndSurname(new StudentDto(name, surname));
+	public ResponseEntity<ApiResponse> findStudentByNameAndSurname(@RequestParam String name, @RequestParam String surname, Pageable pageable) throws ObjNotFoundException {
+		ApiResponse responseDto = studentService.findStudentsByNameAndSurname(new StudentDto(name, surname), pageable);
 		return new ResponseEntity<>(responseDto, responseDto.getStatus());
 	}
 	

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,8 +42,8 @@ public class StudentServiceImplementation implements StudentService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public ApiResponse findAll() throws EmptyListException {
-		List<Student> students = studentRepository.findAll();
+	public ApiResponse findAll(Pageable pageable) throws EmptyListException {
+		List<Student> students = studentRepository.findAll(pageable).getContent();
 		if(students.isEmpty())
 			throw new EmptyListException(String.format(StringUtils.EMPTY_LIST, StringUtils.STUDENT + "s"));
 		return new ApiResponse(HttpStatus.FOUND, mapper.mapAll(students, StudentDto.class));	
@@ -50,8 +51,8 @@ public class StudentServiceImplementation implements StudentService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public ApiResponse findStudentsByNameAndSurname(StudentDto dto) throws ObjNotFoundException {
-		List<Student> students = studentRepository.findByNameAndSurname(dto.getName(), dto.getSurname());
+	public ApiResponse findStudentsByNameAndSurname(StudentDto dto, Pageable pageable) throws ObjNotFoundException {
+		List<Student> students = studentRepository.findByNameAndSurname(dto.getName(), dto.getSurname(), pageable);
 		
 		if(students.isEmpty()) 
 			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_NAME, StringUtils.STUDENT, "name and surname", dto.getName() + " " + dto.getSurname()));
