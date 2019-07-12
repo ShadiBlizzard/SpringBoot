@@ -18,5 +18,5 @@ public interface CourseService {
 	public ApiResponse save(CourseDto dto) throws InvalidOperationException;
 	public ApiResponse update(CourseDto dto) throws InvalidOperationException, ObjNotFoundException;
 	public ApiResponse delete(Integer dto) throws ObjNotFoundException;
-	
+	public ApiResponse count();
 }

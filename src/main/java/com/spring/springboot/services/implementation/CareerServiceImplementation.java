@@ -80,5 +80,11 @@ public class CareerServiceImplementation implements CareerService {
 			throw new IllegalStateException();
 		return new ApiResponse(HttpStatus.FOUND, mapper.mapAll(careers, CareerDto.class));
 	}
+	
+	@Override
+	public ApiResponse count() {
+		Long count = careerRepository.count();
+		return new ApiResponse(HttpStatus.OK, count);
+	}
 
 }

@@ -48,6 +48,12 @@ public class CourseController {
 		return new ResponseEntity<>(listDto, listDto.getStatus());
 	}
 	
+	@GetMapping("/count")
+	public ResponseEntity<ApiResponse> count(){
+		ApiResponse count = courseService.count();
+		return new ResponseEntity<>(count, count.getStatus());
+	}
+	
 	@PostMapping("/new")
 	public ResponseEntity<ApiResponse> saveNewCourse(@RequestBody CourseDto dto) throws InvalidOperationException {
 		ApiResponse courseDto = courseService.save(dto);

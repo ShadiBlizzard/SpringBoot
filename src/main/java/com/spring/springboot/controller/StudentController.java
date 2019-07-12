@@ -50,6 +50,12 @@ public class StudentController {
 		return new ResponseEntity<>(responseDto, responseDto.getStatus());
 	}
 	
+	@GetMapping("/count")
+	public ResponseEntity<ApiResponse> count(){
+		ApiResponse response = studentService.count();
+		return new ResponseEntity<>(response, response.getStatus());
+	}
+	
 	@PostMapping("/new")
 	public ResponseEntity<ApiResponse> insertNewStudent(@RequestBody StudentDto dto) throws InvalidOperationException {
 		ApiResponse responseDto = studentService.save(dto);

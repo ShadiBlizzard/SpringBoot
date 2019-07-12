@@ -91,5 +91,11 @@ public class CourseServiceImplementation implements CourseService {
 		coursesRepository.delete(courseDto);
 		return new ApiResponse(HttpStatus.OK, String.format(StringUtils.DELETE_SUCCESS, course.getClass().getSimpleName()));
 	}
+	
+	@Override
+	public ApiResponse count() {
+		Long count = coursesRepository.count();
+		return new ApiResponse(HttpStatus.OK, count);
+	}
 
 }

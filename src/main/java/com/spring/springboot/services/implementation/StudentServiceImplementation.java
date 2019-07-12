@@ -91,4 +91,11 @@ public class StudentServiceImplementation implements StudentService {
 		return new ApiResponse(HttpStatus.OK, String.format(StringUtils.DELETE_SUCCESS, student.getClass().getSimpleName()));
 	}
 
+	@Override
+	public ApiResponse count() {
+		Long count = studentRepository.count();
+		return new ApiResponse(HttpStatus.OK, count);
+	}
+	
+	
 }

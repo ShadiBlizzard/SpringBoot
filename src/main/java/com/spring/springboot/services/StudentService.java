@@ -16,5 +16,7 @@ public interface StudentService {
 	public ApiResponse save(StudentDto dto) throws InvalidOperationException;
 	public ApiResponse update(StudentDto dto) throws ObjNotFoundException, InvalidOperationException;
 	public ApiResponse delete(Integer dto) throws ObjNotFoundException;
+	public ApiResponse count();
+	
 
 }

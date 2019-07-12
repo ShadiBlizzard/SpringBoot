@@ -49,4 +49,9 @@ public class CareerController {
 		return new ResponseEntity<>(careers, careers.getStatus());
 	}
 
+	@GetMapping("/count")
+	public ResponseEntity<ApiResponse> count(){
+		ApiResponse response = careerService.count();
+		return new ResponseEntity<>(response, response.getStatus());
+	}
 }

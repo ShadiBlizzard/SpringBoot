@@ -12,5 +12,6 @@ public interface CareerService {
 	public ApiResponse findByStudent(Integer id, Pageable pageable) throws ObjNotFoundException, EmptyListException;
 	public ApiResponse findByCourse(String name, Pageable pageable) throws ObjNotFoundException, EmptyListException;
 	public ApiResponse findByCourseAndEvaluation(String name, Integer evaluation, Pageable pageable) throws ObjNotFoundException;
+	public ApiResponse count();
 	
 }
