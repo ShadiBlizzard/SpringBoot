@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,8 +52,8 @@ public class CourseServiceImplementation implements CourseService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public ApiResponse findAll() throws EmptyListException {
-		List<Course> courses = coursesRepository.findAll();
+	public ApiResponse findAll(Pageable pageable) throws EmptyListException {
+		List<Course> courses = coursesRepository.findAll(pageable).getContent();
 		if (courses.isEmpty())
 			throw new EmptyListException(String.format(StringUtils.EMPTY_LIST, StringUtils.COURSE + "s"));
 		return new ApiResponse(HttpStatus.FOUND, mapper.mapAll(courses, CourseDto.class));

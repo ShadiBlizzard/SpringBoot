@@ -2,6 +2,7 @@ package com.spring.springboot.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,8 +43,8 @@ public class CourseController {
 	}
 	
 	@GetMapping("/all")
-	public ResponseEntity<ApiResponse> findAll() throws EmptyListException {
-		ApiResponse listDto =  courseService.findAll();
+	public ResponseEntity<ApiResponse> findAll(Pageable pageable) throws EmptyListException {
+		ApiResponse listDto =  courseService.findAll(pageable);
 		return new ResponseEntity<>(listDto, listDto.getStatus());
 	}
 	
