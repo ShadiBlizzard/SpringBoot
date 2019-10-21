@@ -28,6 +28,7 @@ public class CareerController {
 	public ResponseEntity<ApiResponse> all(Pageable pageable) throws EmptyListException{
 		ApiResponse careers = careerService.findAll(pageable);
 		return new ResponseEntity<>(careers, careers.getStatus());
+		//sbiribillo
 	}
 	
 	@GetMapping("/bystudent/{id}")
