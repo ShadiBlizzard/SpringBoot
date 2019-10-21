@@ -17,7 +17,7 @@ public class ApiResponse {
 	@JsonProperty(required = false)
 	private Object response;
 	
-	private ApiResponse() {
+	public ApiResponse() {
 		timestamp = LocalDateTime.now();
 	}
 	

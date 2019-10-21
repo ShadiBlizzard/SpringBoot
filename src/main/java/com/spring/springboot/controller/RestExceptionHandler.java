@@ -30,7 +30,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
-			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		HttpHeaders headers, HttpStatus status, WebRequest request) {
 		String errorString = "Malformed JSON request";
 		logger.info(ex.getMessage(), ex);
 		
@@ -39,7 +39,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		HttpHeaders headers, HttpStatus status, WebRequest request) {
 		String errorString = "Malformed JSON request";
 		logger.info(ex.getMessage(), ex);
 		

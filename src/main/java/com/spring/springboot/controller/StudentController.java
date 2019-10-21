@@ -21,6 +21,7 @@ import com.spring.springboot.exceptions.EmptyListException;
 import com.spring.springboot.exceptions.InvalidOperationException;
 import com.spring.springboot.exceptions.ObjNotFoundException;
 import com.spring.springboot.services.StudentService;
+import com.spring.springboot.utils.StudentList;
 
 
 @RestController
@@ -33,7 +34,7 @@ public class StudentController {
 	private StudentService studentService;
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<ApiResponse> findStudentById(@PathVariable("id") int id) throws ObjNotFoundException {
+	public ResponseEntity<ApiResponse> findStudentById(@PathVariable("id") int id) {
 		ApiResponse dto = studentService.findStudentById(id);
 		return new ResponseEntity<>(dto, dto.getStatus());
 	}

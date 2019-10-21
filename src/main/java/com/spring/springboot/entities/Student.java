@@ -2,6 +2,7 @@ package com.spring.springboot.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,6 +23,7 @@ public class Student implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	@Column(name = "name")
 	private String name;
 	
 	private String surname;
@@ -44,6 +46,15 @@ public class Student implements Serializable{
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
+
+	public Student(int id2, String name2, String surname2) {
+		this.id = id2;
+		this.name = name2;
+		this.surname = surname2;
+	}
+
+
+	
 	
 	
 }

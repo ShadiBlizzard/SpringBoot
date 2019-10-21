@@ -10,7 +10,7 @@ import com.spring.springboot.exceptions.ObjNotFoundException;
 
 public interface StudentService {
 	
-	public ApiResponse findStudentById(int id) throws ObjNotFoundException;
+	public ApiResponse findStudentById(int id);
 	public ApiResponse findAll(Pageable pageble) throws EmptyListException;
 	public ApiResponse findStudentsByNameAndSurname(StudentDto dto, Pageable pageable) throws ObjNotFoundException;
 	public ApiResponse save(StudentDto dto) throws InvalidOperationException;

@@ -3,6 +3,8 @@ package com.spring.springboot.services.implementation;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -32,12 +34,24 @@ public class StudentServiceImplementation implements StudentService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public ApiResponse findStudentById(int id) throws ObjNotFoundException {
+	public ApiResponse findStudentById(int id) {
+		ApiResponse api = new ApiResponse();
+		try {
 		Optional<Student> student = studentRepository.findById(id);
-		if(student.isPresent())
-			return new ApiResponse(HttpStatus.FOUND, mapper.map(student.get(), StudentDto.class));
-		else
-			throw new ObjNotFoundException(String.format(StringUtils.NOT_FOUND_ID, StringUtils.STUDENT, "id", id));
+		if(student.isPresent()) {
+			api.setStatus(HttpStatus.FOUND);
+			api.setResponse( mapper.map(student.get(), StudentDto.class));
+		}
+		}
+		catch (EntityNotFoundException e) {
+			api.setStatus(HttpStatus.BAD_REQUEST);
+			api.setMsg("id " + id + " not found");
+		}
+
+		return api;
+		
+		
+		
 	}
 
 	@Override
