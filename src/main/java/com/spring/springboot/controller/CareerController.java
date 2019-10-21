@@ -29,7 +29,6 @@ public class CareerController {
 		ApiResponse careers = careerService.findAll(pageable);
 		return new ResponseEntity<>(careers, careers.getStatus());
 		//volante
-		//sbiribillo
 	}
 	
 	@GetMapping("/bystudent/{id}")
